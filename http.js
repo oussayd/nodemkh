@@ -5,218 +5,189 @@ var fs = require("fs");
 var format = require("string-template");
 var compile = require("string-template/compile");
 var cheerio = require('cheerio');
+var LIENS = require('./utils/liens.js');
+var commun = require('./utils/commun.js');
 
 var mongoose = require('mongoose');
 // mongoose for mongodb
 mongoose.connect('mongodb://localhost:27017/amazon'); // connect to mongoDB database on modulus.io
 
-// define model =================
-
-var baseUrl = 'http://www.amazon.fr/gp/offer-listing/';
-
-/*var PrixLocal = new Schema({
-    locale: String,
-    prix: Number
-});*/
-
-var Article = mongoose.model('Deal', {
+var Deal = mongoose.model('Deal', {
     titre: String,
     asin: String,
     categorie: String,
     pays: String,
     url: String,
     prix: Number,
-    prixLocaux: [{
-        locale: String,
-        prix: Number
-}],
-    indice: Number,
+    prixLocaux: {
+        'it': Number,
+        'fr': Number,
+        'de': Number,
+        'couk': Number
+
+    },
+    reduction: Number,
+    reductionGlobale: Number,
     img: String,
     lastUpdate: Date,
     version: Number
 });
 
-var urlTemplate = compile("http://www.amazon.{0}/dp/{1}");
-
-var bebeUrlTemplate = compile("http://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A8873224031%2Cn%3A206617031&page={0}&bbn=8873224031&sort=price-desc-rank");
-
-var locale = [{
-    pays: 'fr',
-    taux: 1
-}, {
-    pays: 'de',
-    taux: 1
-}, {
-    pays: 'it',
-    taux: 1
-}, {
-    pays: 'co.uk',
-    taux: 1.3
-}];
-
-
-
-var pageIndex = 1;
+var lienInfo = LIENS.WAREHOUSE.DE.BEBE;
+var dealsUrl = "http://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A8873224031%2Cn%3A206617031&page={0}&bbn=8873224031&sort=price-desc-rank";
 var lastPage = false;
-var articles = {};
-while (!lastPage && pageIndex < 2) {
+var recherchePrix = function (lien) {
 
-    var url = bebeUrlTemplate(pageIndex);
+    var dealsUrlTemlate = compile(lienInfo.LINK);
 
-    request(url, function (error, response, body) {
+    var urlInfo = commun.getUrlInfos(dealsUrlTemlate(1));
+    var baseUrl = commun.baseUrlTemplate(urlInfo.locale);
+
+    console.log(urlInfo);
+    var pageIndex = 1;
+
+    searchLoop(pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlate);
+
+
+};
+
+var searchLoop = function (pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlate) {
+    console.log(pageIndex + " " + lastPage);
+    var url = dealsUrlTemlate(pageIndex);
+    console.log("---------------------page : " + pageIndex + " url " + url);
+    scrapPricesFromPage(url, urlInfo, baseUrl, lienInfo);
+    setTimeout(function () {
+        pageIndex++;
+        if (!lastPage && pageIndex < 401) {
+            searchLoop(pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlate);
+        } else {
+            console.log("LastPage " + pageIndex);
+        }
+    }, 4000);
+};
+
+var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
+
+    request(_url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
 
             // fs.writeFile('retour.html', body);
             $ = cheerio.load(body);
-            fs.writeFile('retour.htm', $('#atfResults').html());
-            $("li[id^='result']").each(function (i, elem) {
 
+
+
+            $("li[id^='result']").each(function (i, elem) {
                 asin = $(this).attr('data-asin');
                 titre = $(this).find($('h2')).text();
                 imgUrl = $(this).find($('img')).attr('src');
-
-
                 prix = -1;
                 prixString = $(this).find($('.a-color-price')).text();
                 if (prixString) {
-                    prix = parsePrice(prixString, {
-                        pays: 'fr',
-                        taux: 1
+                    prix = commun.parsePrice(prixString, {
+                        pays: urlInfo.locale,
+                        taux: 1.3
                     });
                 }
 
-
-                console.log(asin + " - " + prix + " - " + imgUrl + " - " + titre);
-                articles[asin] = {
-                    prixRec: prix,
-                    titre: titre,
-                    imgUrl: imgUrl,
-                    prix: {}
-                };
+                console.log(asin + " - " + prix);
 
 
-/*
-                Article.findOne({
-                    asin: asin,
-                    pays: 'fr',
-                    prix: prix
-                }, function (err, article) {
 
 
-                    if (!article) {*/
-                        Article.update({
-                                asin: asin,
-                                pays: 'fr'
-                            }, {
-                                titre: titre,
-                                asin: asin,
-                                /*
-                                                                categorie: _cible.CATEGORIE,
-                                */
-                                pays: 'fr',
-                                url: baseUrl + asin + '/',
-                                prix: prix,
-                                /*
-                                                                indice: -1,
-                                */
-                                img: imgUrl,
-                                lastUpdate: Date.now(),
-                                $inc: {
-                                    version: 1
-                                },
-                            }, {
-                                upsert: true
-                            },
-                            function (err, article) {
-                                if (err)
-                                    console.log(err);
+                /*
+                                Deal.findOne({
+                                    asin: asin,
+                                    pays: urlInfo.locale,
+                                    prix: prix
+                                }, function (err, deal) {
 
-                            });
-/*
-                    }
-                    });*/
 
-                locale.forEach(function (locale) {
-                    getLocalPrices(asin, locale);
+                                    if (!deal) {
+                */
+                Deal.update({
+                        asin: asin,
+                        pays: urlInfo.locale
+                    }, {
+                        titre: titre,
+                        asin: asin,
+                        categorie: lienInfo.CATEGORIE,
+                        pays: urlInfo.locale,
+                        url: baseUrl + asin + '/',
+                        prix: prix,
+                        img: imgUrl,
+                        lastUpdate: Date.now(),
+                        $inc: {
+                            version: 1
+                        },
+                    }, {
+                        upsert: true
+                    },
+                    function (err, deal) {
+                        if (err)
+                            console.log(err);
+
+                    });
+
+                /*                  }
+
+                });
+*/
+
+                commun.locale.forEach(function (locale) {
+                    getLocalPrices(asin, locale, urlInfo, prix);
                 });
 
             });
-            //  console.log($('.a-color-price').text());
 
-            /*var regex = /[nb]\s*?id="priceblock_[\w]*?price".*?>(.*?)</img;
-            var price = regex.exec(body);
-            if (price == null || price.length != 2) {
-                console.log("pageScraper.warning.unavailable");
-                return;
-            }
-            console.log(index + " +  asin : " + asin + " +  locale : " + locale + " price : " + price[1]);*/
         } else {
-            lastPage = true;
+            console.log(error);
+            //  lastPage = true;
         }
 
     });
-
-
-    pageIndex++;
-
 }
-/*asinList.forEach(function (asin, asinIndex, asinArray) {
-    locale.forEach(function (locale) {
-        getPrice(asin, locale)
-    });
-});*/
+var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
 
-var getLocalPrices = function (asin, locale) {
-
-    request(urlTemplate(locale.pays, asin), function (error, response, body) {
+    request(commun.articleUrlTemplate(locale.pays, asin), function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var regex = /[nb]\s*?id="priceblock_[\w]*?price".*?>(.*?)</img;
             var price = regex.exec(body);
             if (price == null || price.length != 2) {
                 return;
             }
-            prix = parsePrice(price[1], locale);
-            articles[asin].prix[locale.pays] = prix;
 
-            Article.update({
-                    asin: asin,
-                    pays: 'fr'
-                }, {
-                    $push: {
-                        "prixLocaux": {
-                            "locale": locale.pays,
-                            "prix": prix
-                        }
-                    }
-                }, {
-                    upsert: true
+
+            Deal.findOne({
+                    "asin": asin,
+                    "pays": urlInfo.locale
                 },
-                function (err, article) {
-                    if (err)
+                function (err, deal) {
+                    if (err) {
                         console.log(err);
+                    } else {
+                        console.log("-----Updating : " + deal.asin);
+                        prix = commun.parsePrice(price[1], locale);
+                        reduction = 100 * (prix - prixDeal) / prix;
+                        reduction = reduction.toFixed(2);
 
+                        if (locale.pays === urlInfo.locale) {
+                            deal.reduction = reduction;
+                        }
+                        if (!deal.reductionGlobale || reduction < deal.reductionGlobale) {
+                            deal.reductionGlobale = reduction;
+                        }
+
+                        deal.prixLocaux[locale.pays.replace('.', '')] = prix;
+
+                        console.log("-----Updating : " + deal.asin + " +  locale : " + locale.pays + " price : " + prix);
+                        deal.save();
+                    }
                 });
-            console.log("asin : " + asin + " +  locale : " + locale.pays + " price : " + prix);
+
+            //  
         }
 
     });
 };
 
-var parsePrice = function (stringPrice, locale) {
-    prix = -1;
-
-    if (locale.pays === 'co.uk') {
-        prix = parser(stringPrice.replace(/[^\d^,^.]/g, ''), {
-            us: 0.75,
-            fr: 0.25
-        }) * locale.taux;
-    } else {
-        prix = parser(stringPrice.replace(/[^\d^,^.]/g, ''));
-
-    }
-
-    return prix;
-}
-/*setTimeout(function () {
-    console.log(JSON.stringify(articles, null, 4));
-}, 15000);*/
+recherchePrix(dealsUrl);
