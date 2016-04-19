@@ -287,6 +287,12 @@ var LIENS = {
                 CATEGORIE: 'BEBE',
                 LINK: 'http://www.amazon.de/s/ref=sr_pg_{0}?rh=n%3A3581963031%2Cn%3A355007011&page={0}&bbn=3581963031&sort=price-desc-rank'
             },
+            COMPUTERS: {
+                PAYS: 'DE',
+                CATEGORIE: 'COMPUTERS',
+                LINK: 'http://www.amazon.de/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A562066%2Cn%3A%21569604%2Cn%3A1626220031&page={0}&bbn=3581963031'
+
+            },
             SELECTION: {
                 CUISINE: {
                     PAYS: 'DE',
@@ -382,11 +388,7 @@ var LIENS = {
                 CATEGORIE: 'MOBILE',
                 LINK: 'http://www.amazon.de/s/ref=sr_nr_n_7?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A562066%2Cn%3A%21569604%2Cn%3A1384526031&bbn=3581963031&ie=UTF8&qid=1457899224&rnid=3581963031'
             },
-            COMPUTERS: {
-                PAYS: 'DE',
-                CATEGORIE: 'COMPUTERS',
-                LINK: 'http://www.amazon.de/s/ref=sr_nr_n_3?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A562066%2Cn%3A%21569604%2Cn%3A1626220031&bbn=3581963031&ie=UTF8&qid=1457899224&rnid=3581963031'
-            },
+
 
 
             COOKWARE: {

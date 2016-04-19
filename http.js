@@ -6,6 +6,8 @@ var format = require("string-template");
 var compile = require("string-template/compile");
 var cheerio = require('cheerio');
 var LIENS = require('./utils/liens.js');
+var LINKS = require('./utils/links.js');
+
 var commun = require('./utils/commun.js');
 
 var mongoose = require('mongoose');
@@ -33,7 +35,8 @@ var Deal = mongoose.model('Deal', {
     version: Number
 });
 
-var lienInfo = LIENS.WAREHOUSE.DE.BEBE;
+var lienInfo = LINKS.UK.PARFUM;
+//var lienInfo = LIENS.WAREHOUSE.FR.PETIT_ELECTRO;
 var dealsUrl = "http://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A8873224031%2Cn%3A206617031&page={0}&bbn=8873224031&sort=price-desc-rank";
 var lastPage = false;
 var recherchePrix = function (lien) {
@@ -148,6 +151,8 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 }
 var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
 
+    //  if (locale.pays !== urlInfo.locale) {
+
     request(commun.articleUrlTemplate(locale.pays, asin), function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var regex = /[nb]\s*?id="priceblock_[\w]*?price".*?>(.*?)</img;
@@ -179,7 +184,7 @@ var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
 
                         deal.prixLocaux[locale.pays.replace('.', '')] = prix;
 
-                        console.log("-----Updating : " + deal.asin + " +  locale : " + locale.pays + " price : " + prix);
+                        console.log("-----Updating : " + deal.asin + " +  locale : " + locale.pays + " price : " + prix + " prixDeal : " + prixDeal + " reduction : " + reduction + " reductionGlobale : " + deal.reductionGlobale);
                         deal.save();
                     }
                 });
@@ -188,6 +193,7 @@ var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
         }
 
     });
+    //}
 };
 
 recherchePrix(dealsUrl);
