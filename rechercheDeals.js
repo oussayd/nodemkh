@@ -6,9 +6,11 @@ var format = require("string-template");
 var compile = require("string-template/compile");
 var cheerio = require('cheerio');
 var LIENS = require('./utils/liens.js');
-var LINKS = require('./utils/links.js');
+var NEWLINKS = require('./utils/new.js');
 
 var commun = require('./utils/commun.js');
+
+
 
 var mongoose = require('mongoose');
 // mongoose for mongodb
@@ -26,8 +28,8 @@ var Deal = mongoose.model('Deal', {
         'fr': Number,
         'de': Number,
         'couk': Number
-
     },
+    stock: Number,
     reduction: Number,
     reductionGlobale: Number,
     img: String,
@@ -35,11 +37,23 @@ var Deal = mongoose.model('Deal', {
     version: Number
 });
 
-var lienInfo = LINKS.UK.PARFUM;
-//var lienInfo = LIENS.WAREHOUSE.FR.PETIT_ELECTRO;
+var lienInfo;
+//var lienInfo = LIENS.WAREHOUSE.FR.INFORMATIQUE;
 var dealsUrl = "http://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A8873224031%2Cn%3A206617031&page={0}&bbn=8873224031&sort=price-desc-rank";
 var lastPage = false;
-var recherchePrix = function (lien) {
+var indexLien = 0;
+var links = [];
+
+var searchList = NEWLINKS.FR;
+for (var key in searchList) {
+    if (searchList.hasOwnProperty(key)) {
+        links.push(searchList[key]);
+    }
+}
+
+var recherchePrix = function (indexL) {
+
+    lienInfo = links[indexL];
 
     var dealsUrlTemlate = compile(lienInfo.LINK);
 
@@ -55,34 +69,58 @@ var recherchePrix = function (lien) {
 };
 
 var searchLoop = function (pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlate) {
-    console.log(pageIndex + " " + lastPage);
+    console.log("+++++++++++++++++++++++ Page " + pageIndex + " +++++++++++++++++++++++");
+
     var url = dealsUrlTemlate(pageIndex);
-    console.log("---------------------page : " + pageIndex + " url " + url);
+    console.log("Page URL : " + url);
     scrapPricesFromPage(url, urlInfo, baseUrl, lienInfo);
     setTimeout(function () {
         pageIndex++;
         if (!lastPage && pageIndex < 401) {
             searchLoop(pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlate);
         } else {
-            console.log("LastPage " + pageIndex);
+            console.log("!!!!!!!!!!!!!!!!!!!!!!! LastPage " + pageIndex + " !!!!!!!!!!!!!!!!!!!!!!");
+            indexLien++;
+
+            if (indexLien < links.length) {
+
+                lastPage = false;
+                console.log("//////////////////////////// Passage à la categorie " + links[indexLien].CATEGORIE + " ////////////////////////////");
+
+                recherchePrix(indexLien);
+            } else {
+                console.log("////////////////////// ////// THE END ////////////////////////////");
+            }
+
         }
-    }, 4000);
+    }, 6000);
 };
 
 var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 
+    var options = {
+        url: _url,
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
+        }
+    };
     request(_url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
 
+            //            console.log(body);
             // fs.writeFile('retour.html', body);
             $ = cheerio.load(body);
 
+
+            lastPage = ($("#noResultsTitle").html() != undefined && $("#noResultsTitle").html().length > 0);
+            //
 
 
             $("li[id^='result']").each(function (i, elem) {
                 asin = $(this).attr('data-asin');
                 titre = $(this).find($('h2')).text();
                 imgUrl = $(this).find($('img')).attr('src');
+
                 prix = -1;
                 prixString = $(this).find($('.a-color-price')).text();
                 if (prixString) {
@@ -91,55 +129,56 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
                         taux: 1.3
                     });
                 }
-
-                console.log(asin + " - " + prix);
-
-
+                if (prix > 0 && prix < 10000) {
+                    console.log(asin + " - " + prix);
 
 
-                /*
-                                Deal.findOne({
-                                    asin: asin,
-                                    pays: urlInfo.locale,
-                                    prix: prix
-                                }, function (err, deal) {
 
 
-                                    if (!deal) {
-                */
-                Deal.update({
-                        asin: asin,
-                        pays: urlInfo.locale
-                    }, {
-                        titre: titre,
-                        asin: asin,
-                        categorie: lienInfo.CATEGORIE,
-                        pays: urlInfo.locale,
-                        url: baseUrl + asin + '/',
-                        prix: prix,
-                        img: imgUrl,
-                        lastUpdate: Date.now(),
-                        $inc: {
-                            version: 1
+                    /*
+                                    Deal.findOne({
+                                        asin: asin,
+                                        pays: urlInfo.locale,
+                                        prix: prix
+                                    }, function (err, deal) {
+
+
+                                        if (!deal) {
+                    */
+                    Deal.update({
+                            asin: asin,
+                            pays: urlInfo.locale
+                        }, {
+                            titre: titre,
+                            asin: asin,
+                            categorie: lienInfo.CATEGORIE,
+                            pays: urlInfo.locale,
+                            url: baseUrl + asin + '/',
+                            prix: prix,
+                            img: imgUrl,
+                            lastUpdate: Date.now(),
+                            $inc: {
+                                version: 1
+                            },
+                        }, {
+                            upsert: true
                         },
-                    }, {
-                        upsert: true
-                    },
-                    function (err, deal) {
-                        if (err)
-                            console.log(err);
+                        function (err, deal) {
+                            if (err)
+                                console.log(err);
 
-                    });
+                        });
 
-                /*                  }
+                    /*                  }
 
                 });
 */
 
-                commun.locale.forEach(function (locale) {
-                    getLocalPrices(asin, locale, urlInfo, prix);
-                });
+                    commun.locale.forEach(function (locale) {
+                        getLocalPrices(asin, locale, urlInfo, prix);
+                    });
 
+                }
             });
 
         } else {
@@ -151,7 +190,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 }
 var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
 
-    //  if (locale.pays !== urlInfo.locale) {
+    //if (locale.pays !== urlInfo.locale) {
 
     request(commun.articleUrlTemplate(locale.pays, asin), function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -170,21 +209,27 @@ var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log("-----Updating : " + deal.asin);
+
                         prix = commun.parsePrice(price[1], locale);
-                        reduction = 100 * (prix - prixDeal) / prix;
+                        reduction = 100 * prixDeal / prix;
                         reduction = reduction.toFixed(2);
 
                         if (locale.pays === urlInfo.locale) {
+
                             deal.reduction = reduction;
-                        }
-                        if (!deal.reductionGlobale || reduction < deal.reductionGlobale) {
+                            $ = cheerio.load(body);
+                            var stock = $("#availability span").html();
+                            if (stock != undefined && stock.trim().match(/\d+/) > 0) {
+                                deal.stock = stock.trim().match(/\d+/)[0];
+                                console.log(deal.stock);
+                            }
+                        } else if (!!deal && (!deal.reductionGlobale || reduction < deal.reductionGlobale)) {
                             deal.reductionGlobale = reduction;
                         }
 
                         deal.prixLocaux[locale.pays.replace('.', '')] = prix;
 
-                        console.log("-----Updating : " + deal.asin + " +  locale : " + locale.pays + " price : " + prix + " prixDeal : " + prixDeal + " reduction : " + reduction + " reductionGlobale : " + deal.reductionGlobale);
+                        console.log(commun.articleUrlTemplate(locale.pays, asin) + " prix : " + prix + " prixLocal : " + prixDeal + " reduction : " + reduction + " reductionGlobale : " + deal.reductionGlobale);
                         deal.save();
                     }
                 });
@@ -193,7 +238,7 @@ var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
         }
 
     });
-    //}
+    // }
 };
 
-recherchePrix(dealsUrl);
+recherchePrix(indexLien);
