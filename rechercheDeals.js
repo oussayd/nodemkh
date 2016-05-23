@@ -5,11 +5,13 @@ var fs = require("fs");
 var format = require("string-template");
 var compile = require("string-template/compile");
 var cheerio = require('cheerio');
-var LIENS = require('./utils/liens.js');
-var NEWLINKS = require('./utils/new.js');
+var RECONDITIONNE = require('./utils/reconditionne.js');
+var NOUVEAU = require('./utils/nouveau.js');
 
 var commun = require('./utils/commun.js');
 
+
+var searchList = NOUVEAU.DJEAN;
 
 
 var mongoose = require('mongoose');
@@ -43,8 +45,8 @@ var dealsUrl = "http://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A8873224
 var lastPage = false;
 var indexLien = 0;
 var links = [];
-
-var searchList = NEWLINKS.FR;
+var _categorie = "";
+var pageIndex;
 for (var key in searchList) {
     if (searchList.hasOwnProperty(key)) {
         links.push(searchList[key]);
@@ -61,7 +63,7 @@ var recherchePrix = function (indexL) {
     var baseUrl = commun.baseUrlTemplate(urlInfo.locale);
 
     console.log(urlInfo);
-    var pageIndex = 1;
+    pageIndex = 1;
 
     searchLoop(pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlate);
 
@@ -89,7 +91,18 @@ var searchLoop = function (pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlat
 
                 recherchePrix(indexLien);
             } else {
+                console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+                console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 console.log("////////////////////// ////// THE END ////////////////////////////");
+                console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+                console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
             }
 
         }
@@ -113,7 +126,13 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 
 
             lastPage = ($("#noResultsTitle").html() != undefined && $("#noResultsTitle").html().length > 0);
-            //
+            /*
+
+                        if (pageIndex === 1) {
+                            _categorie = $("div[id='wayfinding-breadcrumbs_feature_div']").children().children().first().find('a').text().trim();
+                            console.log(_categorie);
+                        }
+            */
 
 
             $("li[id^='result']").each(function (i, elem) {
@@ -136,6 +155,8 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 
 
                     /*
+                    
+                    //*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[1]/span/a
                                     Deal.findOne({
                                         asin: asin,
                                         pays: urlInfo.locale,
@@ -152,6 +173,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
                             titre: titre,
                             asin: asin,
                             categorie: lienInfo.CATEGORIE,
+                            //categorie: _categorie,
                             pays: urlInfo.locale,
                             url: baseUrl + asin + '/',
                             prix: prix,
@@ -208,7 +230,7 @@ var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
                 function (err, deal) {
                     if (err) {
                         console.log(err);
-                    } else {
+                    } else if (deal != null) {
 
                         prix = commun.parsePrice(price[1], locale);
                         reduction = 100 * prixDeal / prix;
