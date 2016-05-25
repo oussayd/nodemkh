@@ -366,7 +366,7 @@ var RECONDITIONNE = {
     },
     DE: {
 
-        COMPUTERS: {
+        /*   COMPUTERS: {
             PAYS: 'DE',
             CATEGORIE: 'COMPUTERS',
             LINK: 'http://www.amazon.de/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A562066%2Cn%3A%21569604%2Cn%3A1626220031&page={0}&bbn=3581963031'
@@ -466,7 +466,7 @@ var RECONDITIONNE = {
             CATEGORIE: 'CUISINE',
             LINK: 'http://www.amazon.de/gp/search/ref=sr_nr_n_15?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A3167641%2Cn%3A%213169011%2Cn%3A3597047031&bbn=3581963031&ie=UTF8&qid=1457899272&rnid=3581963031'
         },
-
+*/
         TELEPHONE: {
             PAYS: 'DE',
             CATEGORIE: 'TELEPHONE',
