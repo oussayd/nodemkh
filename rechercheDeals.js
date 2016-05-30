@@ -11,8 +11,8 @@ var NOUVEAU = require('./utils/nouveau.js');
 var commun = require('./utils/commun.js');
 
 
-var searchList = NOUVEAU.DJEAN;
-
+var searchList = RECONDITIONNE.DE;
+var numeroDeal = 0;
 
 var mongoose = require('mongoose');
 // mongoose for mongodb
@@ -74,7 +74,7 @@ var searchLoop = function (pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlat
     console.log("+++++++++++++++++++++++ Page " + pageIndex + " +++++++++++++++++++++++");
 
     var url = dealsUrlTemlate(pageIndex);
-    console.log("Page URL : " + url);
+    console.log("[" + lienInfo.CATEGORIE + "] Page URL : " + url);
     scrapPricesFromPage(url, urlInfo, baseUrl, lienInfo);
     setTimeout(function () {
         pageIndex++;
@@ -106,7 +106,7 @@ var searchLoop = function (pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlat
             }
 
         }
-    }, 6000);
+    }, 10000);
 };
 
 var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
@@ -114,13 +114,16 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
     var options = {
         url: _url,
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
+            'User-Agent':
+            //'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
+
+                'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0'
         }
     };
     request(_url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
 
-            //            console.log(body);
+            //console.log(body);
             // fs.writeFile('retour.html', body);
             $ = cheerio.load(body);
 
@@ -136,6 +139,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 
 
             $("li[id^='result']").each(function (i, elem) {
+                numeroDeal++;
                 asin = $(this).attr('data-asin');
                 titre = $(this).find($('h2')).text();
                 imgUrl = $(this).find($('img')).attr('src');
@@ -149,7 +153,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
                     });
                 }
                 if (prix > 0 && prix < 10000) {
-                    console.log(asin + " - " + prix);
+                    console.log(numeroDeal + " - " + asin + " : " + prix);
 
 
 
@@ -197,7 +201,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 */
 
                     commun.locale.forEach(function (locale) {
-                        getLocalPrices(asin, locale, urlInfo, prix);
+                        getLocalPrices(asin, locale, urlInfo, prix, numeroDeal);
                     });
 
                 }
@@ -210,7 +214,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 
     });
 }
-var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
+var getLocalPrices = function (asin, locale, urlInfo, prixDeal, numeroDeal) {
 
     //if (locale.pays !== urlInfo.locale) {
 
@@ -251,7 +255,7 @@ var getLocalPrices = function (asin, locale, urlInfo, prixDeal) {
 
                         deal.prixLocaux[locale.pays.replace('.', '')] = prix;
 
-                        console.log(commun.articleUrlTemplate(locale.pays, asin) + " prix : " + prix + " prixLocal : " + prixDeal + " reduction : " + reduction + " reductionGlobale : " + deal.reductionGlobale);
+                        console.log(numeroDeal + " - " + commun.articleUrlTemplate(locale.pays, asin) + " prix : " + prix + " prixLocal : " + prixDeal + " reduction : " + reduction + " reductionGlobale : " + deal.reductionGlobale);
                         deal.save();
                     }
                 });
