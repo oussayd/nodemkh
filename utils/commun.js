@@ -6,19 +6,31 @@ var format = require("string-template");
 var compile = require("string-template/compile");
 var cheerio = require('cheerio');
 
-var locale = [{
-    pays: 'fr',
-    taux: 1
-}, {
-    pays: 'de',
-    taux: 1
-}, {
-    pays: 'it',
-    taux: 1
-}, {
-    pays: 'co.uk',
-    taux: 1.3
-}];
+var locale = [
+  /*  {
+        pays: 'fr',
+        taux: 1
+    }
+
+        ,*/
+
+    {
+        pays: 'de',
+        taux: 1
+        }
+
+
+        ,
+    {
+        pays: 'it',
+        taux: 1
+                }
+                ,
+    {
+        pays: 'co.uk',
+        taux: 1.2
+                }
+];
 
 var getUrlInfos = function (_url) {
     domain = extractDomain(_url);

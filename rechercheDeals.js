@@ -7,13 +7,31 @@ var compile = require("string-template/compile");
 var cheerio = require('cheerio');
 var RECONDITIONNE = require('./utils/reconditionne.js');
 var NOUVEAU = require('./utils/nouveau.js');
+var nodemailer = require('nodemailer');
 
 var commun = require('./utils/commun.js');
 
+var TIMEOUT = 60000;
+var prixLimite = 30;
+var compareLocalPrices = true;
+//var searchList = NOUVEAU.FLASH;
+//var searchList = RECONDITIONNE.TOP;
+//var searchList = RECONDITIONNE.BARRES_TOIT;
+var searchList = RECONDITIONNE.BEBE;
 
-var searchList = RECONDITIONNE.DE;
+//var searchList = RECONDITIONNE.SKI;
+//var searchList = RECONDITIONNE.PS4;
+//var searchList = RECONDITIONNE.COFFRE;
+
+//var searchList = RECONDITIONNE.RAPIDE;
+//var searchList = RECONDITIONNE.UK;
+//var searchList = NOUVEAU.SOLDES;
+
+//var searchList = NOUVEAU.FR;
+
+
 var numeroDeal = 0;
-
+var emailDealList = [];
 var mongoose = require('mongoose');
 // mongoose for mongodb
 mongoose.connect('mongodb://localhost:27017/amazon'); // connect to mongoDB database on modulus.io
@@ -52,6 +70,76 @@ for (var key in searchList) {
         links.push(searchList[key]);
     }
 }
+
+var transporter = nodemailer.createTransport({
+    host: 'mail.gmx.com',
+    port: 587,
+    tls: {
+        ciphers: 'SSLv3',
+        rejectUnauthorized: false
+    },
+    //   logger: true, // log to console
+    // debug: true, // include SMTP traffic in the logs
+    // debug: true, // include SMTP traffic in the logs
+
+    // define proxy configuration
+    service: 'Gmx',
+    auth: {
+        user: 'oussayd@gmx.com', // Your email id
+        pass: 'rafhaj14' // Your password
+    }
+});
+
+
+/*var transporter = nodemailer.createTransport({
+    host: 'mail.gmx.com',
+    port: 587,
+    tls: {
+        ciphers: 'SSLv3',
+        rejectUnauthorized: false
+    },
+    //   logger: true, // log to console
+    // debug: true, // include SMTP traffic in the logs
+    // debug: true, // include SMTP traffic in the logs
+
+    // define proxy configuration
+    service: 'Gmx',
+    auth: {
+        user: 'mohamed.khaireddine@gmail.com', // Your email id
+        pass: 'ktbJD9!!*+7*' // Your password
+    }
+});*/
+
+/*
+var transporter = nodemailer.createTransport('smtps://mohamed.khaireddine%40gmail.com:ktbJD9!!*+7*@smtp.gmail.com');
+*/
+
+
+var sendMail = function (deal) {
+
+    var mailOptions = {
+        from: 'oussayd@gmx.com', // sender address
+        // from: 'mohamed.khaireddine@gmail.com',
+        to: 'oussayd@gmail.com,maryamnjimi@gmail.com', // list of receivers
+        subject: '[Deal][' + deal.categorie + '][' + deal.pays + '] - R=' + deal.reductionGlobale + '% P=' + deal.prix + '€ : ' + deal.titre, // Subject line
+        html: ' <h2 > <a href="' + deal.url + '" target="_blank">' + deal.titre + '  </a></h2><table><tr><td>    <a href="' + deal.url + '" target="_blank"> <img style="width:100px;height:100px;" src="' + deal.img + '"></a>  </td>  <td >' + deal.prix + '</td> <td >' + deal.stock + '</td><td>' + deal.reduction + '</td>   <td > ' + deal.reductionGlobale + '</td> <td style="color:blue;" >' + deal.prixLocaux.fr + '</td><td style="color:red;" >' + deal.prixLocaux.couk + '</td><td> <b>' + deal.prixLocaux.de + '</b></td><td style="color:green;" >' + deal.prixLocaux.it + '</td></tr></table>'
+
+
+    };
+
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+
+        } else {
+            console.log('Message sent: ' + info.response);
+
+        };
+    });
+
+}
+
 
 var recherchePrix = function (indexL) {
 
@@ -106,7 +194,7 @@ var searchLoop = function (pageIndex, urlInfo, baseUrl, lienInfo, dealsUrlTemlat
             }
 
         }
-    }, 10000);
+    }, TIMEOUT);
 };
 
 var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
@@ -114,10 +202,9 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
     var options = {
         url: _url,
         headers: {
-            'User-Agent':
-            //'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
-
-                'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
+                //    'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                // 'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0'
         }
     };
     request(_url, function (error, response, body) {
@@ -128,7 +215,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
             $ = cheerio.load(body);
 
 
-            lastPage = ($("#noResultsTitle").html() != undefined && $("#noResultsTitle").html().length > 0);
+            lastPage = ($("#noResultsTitle").html() != undefined && $("#noResultsTitle").html().length > 0) || ($("div.proceedWarning").html() != undefined && $("div.proceedWarning").html().length > 0);
             /*
 
                         if (pageIndex === 1) {
@@ -160,16 +247,16 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 
                     /*
                     
-                    //*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[1]/span/a
-                                    Deal.findOne({
-                                        asin: asin,
-                                        pays: urlInfo.locale,
-                                        prix: prix
-                                    }, function (err, deal) {
+                        //*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[1]/span/a
+                                        Deal.findOne({
+                                            asin: asin,
+                                            pays: urlInfo.locale,
+                                            prix: prix
+                                        }, function (err, deal) {
 
 
-                                        if (!deal) {
-                    */
+                                            if (!deal) {
+                        */
                     Deal.update({
                             asin: asin,
                             pays: urlInfo.locale
@@ -198,13 +285,27 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
                     /*                  }
 
                 });
+                
 */
 
-                    commun.locale.forEach(function (locale) {
-                        getLocalPrices(asin, locale, urlInfo, prix, numeroDeal);
-                    });
+                    // console.log("lancement requete  " + (i + 1));
+                    if (compareLocalPrices) {
+                        if (prix <= prixLimite) {
+
+
+                            var loc = commun.locale[numeroDeal % 3];
+                            getLocalPrices(asin, loc, urlInfo, prix, numeroDeal);
+
+                            /*  commun.locale.forEach(function (locale) {
+      //TODO Ajout délai d'une seconde entre les differentes locales
+      getLocalPrices(asin, locale, urlInfo, prix, numeroDeal);
+
+  });*/
+                        }
+                    }
 
                 }
+
             });
 
         } else {
@@ -249,13 +350,19 @@ var getLocalPrices = function (asin, locale, urlInfo, prixDeal, numeroDeal) {
                                 deal.stock = stock.trim().match(/\d+/)[0];
                                 console.log(deal.stock);
                             }
-                        } else if (!!deal && (!deal.reductionGlobale || reduction < deal.reductionGlobale)) {
+
+                        }
+                        if (!!deal && (!deal.reductionGlobale || reduction < deal.reductionGlobale)) {
                             deal.reductionGlobale = reduction;
                         }
+
 
                         deal.prixLocaux[locale.pays.replace('.', '')] = prix;
 
                         console.log(numeroDeal + " - " + commun.articleUrlTemplate(locale.pays, asin) + " prix : " + prix + " prixLocal : " + prixDeal + " reduction : " + reduction + " reductionGlobale : " + deal.reductionGlobale);
+                        if (deal.reductionGlobale < 35) {
+                            //                        emailDealList.push(deal)
+                        }
                         deal.save();
                     }
                 });
@@ -267,4 +374,17 @@ var getLocalPrices = function (asin, locale, urlInfo, prixDeal, numeroDeal) {
     // }
 };
 
+
+
 recherchePrix(indexLien);
+
+/*var intv = setInterval(function () {
+
+    var dealToSend = emailDealList.pop();
+    if (dealToSend !== undefined) {
+        console.log("sending mail... deals left = " + emailDealList.length);
+        sendMail(dealToSend);
+    } else {
+        console.log("nothing to send");
+    }
+}, 60000);*/
