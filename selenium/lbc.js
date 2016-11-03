@@ -1,11 +1,10 @@
 var dp = require('jasmine-data-provider'); //Install the npm package and provide its path
 var lbcData = require('./data.js').data;
-var EC = protractor.ExpectedConditions;
 
 console.log(lbcData);
 beforeAll(function () {
     browser.driver.manage().window().maximize();
-
+    browser.ignoreSynchronization = true;
     browser.get('https://www.leboncoin.fr/li?ca=12_s').then(function () {
         var connectBtn = element.all(by.css('[data-popin-template="connexion"]')).get(1);
         browser.sleep(2000);
