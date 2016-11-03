@@ -18,12 +18,12 @@ var compareLocalPrices = false;
 var skipList = true;
 //var searchList = NOUVEAU.BARRES_TOIT;
 
-var searchList = RECONDITIONNE.TOP;
+//var searchList = RECONDITIONNE.TOP;
 //var searchList = RECONDITIONNE.MONTRES;
-//var searchList = RECONDITIONNE.BARRES_TOIT;
+var searchList = RECONDITIONNE.BARRES_TOIT;
 //var searchList = RECONDITIONNE.BEBE;
 //var searchList = RECONDITIONNE.ONDULEUR;
-
+//var searchList = RECONDITIONNE.UK;
 //var searchList = RECONDITIONNE.SKI;
 //var searchList = RECONDITIONNE.PS4;
 //var searchList = RECONDITIONNE.COFFRE;
@@ -320,6 +320,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl, lienInfo) {
 
     });
 }
+
 var getLocalPrices = function (asin, locale, urlInfo, prixDeal, numeroDeal) {
 
     //if (locale.pays !== urlInfo.locale) {

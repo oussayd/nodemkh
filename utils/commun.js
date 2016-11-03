@@ -46,18 +46,18 @@ var extractDomain = function (_url) {
     return domain;
 }
 
-var parsePrice = function (stringPrice, locale) {
+var parsePrice = function (stringPrice, pays) {
     prix = -1;
-
-    if (locale.pays === 'co.uk') {
+    if (pays === 'co.uk') {
         prix = parser(stringPrice.replace(/[^\d^,^.]/g, ''), {
                 us: 0.75,
                 fr: 0.25
-            }) * 1.3;
+            }) * 1.2;
     } else {
         prix = parser(stringPrice.replace(/[^\d^,^.]/g, ''));
 
     }
+
 
     return prix.toFixed(2);
 };

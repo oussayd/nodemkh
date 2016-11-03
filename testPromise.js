@@ -35,12 +35,12 @@ var promiseFn3 = function (index) {
 };
 var promiseFn4 = function (index) {
 
-    setTimeout(function () {
-        console.log("Etatpe 4 : " + index);
+    //setTimeout(function () {
+      //  console.log("Etatpe 4 : " + index);
         index++;
         if (index < dealsList.length)
             return promiseAll(index);
-    }, 1000);
+  //  }, 1000);
 
 };
 
@@ -50,10 +50,7 @@ var promiseInt = function (index) {
 var promiseAll = function (index) {
     promiseFn1(index)
         .then(promiseInt)
-
-
-    .
-    then(promiseFn4);
+        .then(promiseFn4);
 
 };
 promiseAll(0);

@@ -12,10 +12,31 @@ var format = require("string-template");
 var compile = require("string-template/compile");
 var cheerio = require('cheerio');
 var mongoose = require('mongoose');
+var RECONDITIONNE = require('./utils/reconditionne.js');
+var NOUVEAU = require('./utils/nouveau.js');
+var USER_AGENTS = require('./utils/userAgents.js');
+
 // mongoose for mongodb
 mongoose.connect('mongodb://localhost:27017/amazon'); // connect to mongoDB database on modulus.io
 
+var skipList = false;
+var lienInfo = {
+    CATEGORIE: 'MONTRES',
+    LINK: "https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A60649031%2Cp_89%3AHugo+Boss%7CSamsung%7CFossil%7CPolice%7CSeiko%7CLotus&page={0}&bbn=3581943031&ie=UTF8&qid=1476728791"
+}
+var searchList  = RECONDITIONNE.BARRES_TOIT;
+//var searchList = RECONDITIONNE.UK;
+//var searchList = NOUVEAU.FR;
+var indexLien = 0;
+var links = [];
+for (var key in searchList) {
+    if (searchList.hasOwnProperty(key)) {
+        links.push(searchList[key]);
+    }
+}
 
+var isNew = true;
+var UPDATE_DB = false;
 var Deal = mongoose.model('Deal', {
     titre: String,
     asin: String,
@@ -41,13 +62,9 @@ var Deal = mongoose.model('Deal', {
 var commun = require('./utils/commun.js');
 
 
-var lienInfo = {
-    CATEGORIE: 'MONTRES',
-    LINK: "https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A60649031%2Cp_89%3AHugo+Boss%7CSamsung%7CFossil%7CPolice%7CSeiko%7CLotus&page={0}&bbn=3581943031&ie=UTF8&qid=1476728791"
-}
-
-
-var TIMEOUT = 3000;
+//var START_INDEX =39;
+var START_INDEX =0;
+var TIMEOUT = 1000;
 var prixLimite = 75;
 var compareLocalPrices = false;
 var numeroDeal = 0;
@@ -56,8 +73,10 @@ var pageIndex;
 var urlInfo;
 var baseUrl;
 var $;
-var recherchePrix = function () {
 
+var recherchePrix = function (indexL) {
+
+    lienInfo = links[indexL];
 
     urlInfo = commun.getUrlInfos(compile(lienInfo.LINK)(1));
     baseUrl = commun.baseUrlTemplate(urlInfo.locale);
@@ -88,7 +107,7 @@ var promiseFn1 = function (index) {
     setTimeout(function () {
         console.log("Etatpe 1 : " + index);
         deferred.resolve(index);
-    }, 1000);
+    }, TIMEOUT);
     return deferred.promise;
 };
 
@@ -97,14 +116,25 @@ var checkNext = function () {
 
     pageIndex++;
     if (!lastPage && pageIndex < 401) {
-        return searchLoop();
+        setTimeout(function() {
+            return searchLoop();
+        },TIMEOUT);
     } else {
+          indexLien++;
+
+        if (indexLien < links.length) {
+
+            lastPage = false;
+            console.log("//////////////////////////// Passage à la categorie " + links[indexLien].CATEGORIE + " ////////////////////////////");
+
+            recherchePrix(indexLien);
+        }else {
        // var deferred = Q.defer();
 
         console.log("!!!!!!!!!!!!!!!!!!!!!!! LastPage " + pageIndex + " !!!!!!!!!!!!!!!!!!!!!!");
         logEnd();
         process.exit(0);
-
+        }
         //  exit(0);
         //deferred.resolve();
         //return deferred.promise;
@@ -115,14 +145,11 @@ var checkNext = function () {
 };
 
 
-var parsePrice = function (prixString, urlInfo) {
+var parsePrice = function (prixString,pays ) {
     var prix;
     if (prixString) {
-        prix = commun.parsePrice(prixString, {
-            pays: urlInfo.locale,
-            taux: 1.3
-        });
-    }
+        prix = commun.parsePrice(prixString, pays);
+     }
     return prix;
 }
 var scrapPricesFromPage = function (_url, urlInfo, baseUrl) {
@@ -146,7 +173,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl) {
             }
         })
         .catch(function (err) {
-            console.log(err);
+            console.log("err");
             deferred.resolve();
 
         });
@@ -158,12 +185,11 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl) {
 
 var promiseFn4 = function (dealListIndex) {
 
-    //setTimeout(function () {
     //  console.log("Etatpe 4 : " + index);
     dealListIndex++;
     if (dealListIndex < dealList.length)
         return promiseAll(dealListIndex);
-    //  }, 1000);
+
 
 };
 var promiseAll = function (index) {
@@ -173,23 +199,167 @@ var promiseAll = function (index) {
 
 };
 
+function createNewDeal(asin, titre, prix, imgUrl, deferred, index) {
+    console.log("deal not found");
+
+    var newDeal = new Deal({
+        asin: asin,
+        pays: urlInfo.locale,
+        titre: titre,
+        categorie: lienInfo.CATEGORIE,
+        url: baseUrl + asin + '/',
+        prix: prix,
+        img: imgUrl,
+        lastUpdate: Date.now(),
+        version: 1
+
+    });
+    newDeal.save(function (err) {
+        if (err) {
+            console.log(err);
+        }
+        updateAllLocales(newDeal, deferred, index);
+
+       // deferred.resolve(index);
+    })
+}
+function updateAllLocales(deal, deferred, index) {
+    updateLocalPrice(deal, "fr")
+        .then(function () {
+            updateLocalPrice(deal, "de")
+                .then(function () {
+                    updateLocalPrice(deal, "it")
+                        .then(function () {
+                            updateLocalPrice(deal, "co.uk")
+                                .then(function () {
+                                    deal.save();
+                                    console.log( numeroDeal +" - " + deal.asin + " saved");
+
+                                        deferred.resolve(index);
+
+
+                                })
+                        })
+                })
+        })
+    ;
+}
+function updateExistingDeal(deal, titre, asin, prix, imgUrl, deferred, index) {
+    deal.titre = titre;
+    deal.asin = asin;
+    deal.categorie = lienInfo.CATEGORIE;
+    deal.pays = urlInfo.locale;
+    deal.url = baseUrl + asin + '/';
+    deal.prix = prix;
+    deal.img = imgUrl;
+    deal.lastUpdate = Date.now();
+    deal.version++;
+
+    for (var key in deal.prixLocaux) {
+        if (deal.prixLocaux.hasOwnProperty(key)&&deal.prixLocaux[key]<0) {
+            deal.prixLocaux[key] = null;
+            deal.reductionGlobale = null;
+            deal.reduction = null;
+        }
+    }
+
+    updateAllLocales(deal, deferred, index);
+
+
+
+}
+function updateDeal(index, deferred) {
+    var _this = dealList[index];
+
+    var asin = $(_this).attr('data-asin');
+    var titre = $(_this).find($('h2')).text();
+    var imgUrl = $(_this).find($('img')).attr('src');
+    var prix = -1;
+
+    var prixString = $(_this).find($('.a-size-small')).find($('.a-color-price')).text();
+    if (!prixString){
+        prixString = $(_this).find($('.a-color-price')).text();
+    }
+    prix = parsePrice(prixString, urlInfo.locale);
+
+    console.log(numeroDeal + " - " + asin + " : " + prix);
+
+    if(!isNotInList(titre,lienInfo.CATEGORIE,commun.whiteList)){
+    Deal.findOne({
+        asin: asin,
+        pays: urlInfo.locale
+    }, function (err, deal){
+
+        if (err){
+
+            console.log(err.type + " ---- " + err.value);
+                deferred.resolve(index);
+        }
+        else if (!deal) {
+            createNewDeal(asin, titre, prix, imgUrl, deferred, index);
+        }else {
+            updateExistingDeal(deal, titre, asin, prix, imgUrl, deferred, index);
+
+        }
+    });
+    }else {
+        deferred.resolve(index);
+    }
+/*    Deal.update({
+            asin: asin,
+            pays: urlInfo.locale
+        },
+        {
+            titre: titre,
+            asin: asin,
+            categorie: lienInfo.CATEGORIE,
+            //categorie: _categorie,
+            pays: urlInfo.locale,
+            url: baseUrl + asin + '/',
+            prix: prix,
+            img: imgUrl,
+            lastUpdate: Date.now(),
+            $inc: {
+                version: 1
+            },
+        },
+        {
+            upsert: true
+        },
+        function (err, deal) {
+            if (err)
+                console.log(err);
+
+            console.log("-----" + JSON.stringify(deal));
+            setTimeout(function () {
+                deferred.resolve(index);
+            }, 200);
+
+        });*/
+}
+var isNotInList = function (title, categorie,listTitres) {
+
+    console.log( " - " + title )
+    if (skipList || categorie.indexOf("MONTRES")<0) {
+        return false;
+    }
+    if (!title) {
+        return false;
+    }
+    for (var i = 0; i < listTitres.length; i++) {
+        if (title.toLowerCase().indexOf(listTitres[i].toLowerCase()) >= 0) {
+            return false
+        }
+    }
+    return true;
+}
 var promiseFn1 = function (index) {
     var deferred = Q.defer();
     console.log("Etatpe 1 : " + index);
 
     numeroDeal++;
-    _this = dealList[index];
-    asin = $(_this).attr('data-asin');
-    titre = $(_this).find($('h2')).text();
-    imgUrl = $(_this).find($('img')).attr('src');
-    prix = -1;
-    prixString = $(_this).find($('.a-color-price')).text();
-    prix = parsePrice(prixString, urlInfo);
+    updateDeal(index, deferred);
 
-    console.log(numeroDeal + " - " + asin + " : " + prix);
-    setTimeout(function () {
-        deferred.resolve(index);
-    }, 200);
 
 
     return deferred.promise;
@@ -201,16 +371,102 @@ function logEnd() {
     console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 }
 
+var getRandomUserAgent = function(){
+    var uagent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+    console.log(uagent);
+    return uagent;
+};
+
+var uA = getRandomUserAgent();
+var nbReqs = 0;
 var reqOptions = function (_url) {
+    nbReqs++;
+    if (nbReqs%25==0){
+     uA = getRandomUserAgent();
+    }
     return {
-        url: _url,
+        url: _url
+        ,
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
-            //    'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
-            // 'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0'
+            'User-Agent':uA
+
+              // 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
+              //  'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+            //'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0'
         }
     }
 };
 
 
-recherchePrix();
+
+function updateReduction(deal, prixLocal, pays, _urlLocale, deferred,delay) {
+    var reduction = (100 * deal.prix / prixLocal).toFixed(2);
+    if (!!deal && (!deal.reductionGlobale || reduction < deal.reductionGlobale)) {
+        deal.reductionGlobale = reduction;
+    }
+    if (pays === deal.pays) {
+        deal.reduction = reduction;
+    }
+    console.log(numeroDeal + " - " + _urlLocale + " p[" + deal.prix + "]" + " pL[" + prixLocal + "]" + " r[" + deal.reduction + "]" + " RG[" + deal.reductionGlobale + "]");
+   if(delay){
+    setTimeout(function () {
+        deferred.resolve();
+    }, TIMEOUT);
+   }else {
+       deferred.resolve();
+
+   }
+}
+var updateLocalPrice = function (deal,pays) {
+
+    var deferred = Q.defer();
+    var _urlLocale = commun.articleUrlTemplate( pays,deal.asin);
+
+   /* setTimeout(function () {
+        console.log("updateLocalPrice : "  + deal.asin +" - "+ pays);
+        deferred2.resolve();
+    }, 2000);*/
+    if (!!deal.prixLocaux[pays.replace('.', '')] || deal.prixLocaux[pays.replace('.', '')] <0){
+        var prixLocal = deal.prixLocaux[pays.replace('.', '')].toFixed(2);
+        updateReduction(deal, prixLocal, pays, _urlLocale, deferred,false);
+
+    }else
+    {
+        if (!UPDATE_DB){
+            deferred.resolve();
+
+        }else {
+            var options = reqOptions(_urlLocale);
+
+            rp(options)
+                .then(function (body) {
+                    var regex = /[nb]\s*?id="priceblock_[\w]*?price".*?>(.*?)</img;
+                    var price = regex.exec(body);
+                   // var $$$ = cheerio.load(body);
+
+                    if (price == null || price.length != 2) {
+                        deferred.resolve();
+                    }else {
+                        var prixLocal = commun.parsePrice(price[1], pays);
+                        deal.prixLocaux[pays.replace('.', '')] =prixLocal;
+
+            /*                var stock = $$$("#availability span").html();
+                        if (stock != undefined && stock.trim().match(/\d+/) > 0) {
+                            deal.stock[pays] = stock.trim().match(/\d+/)[0];
+                        }*/
+                        updateReduction(deal, prixLocal, pays, _urlLocale, deferred,false);
+                    }
+                })
+                .catch(function (err) {
+                    console.log("err");
+                    deferred.resolve();
+
+                });
+        }
+    }
+
+    return deferred.promise;
+
+}
+
+recherchePrix(indexLien);
