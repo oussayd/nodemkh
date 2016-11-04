@@ -17,8 +17,8 @@ beforeAll(function () {
         var usernameInput = element(by.css('[name="st_username"]'));
         browser.wait(protractor.ExpectedConditions.visibilityOf(usernameInput));
 
-        usernameInput.sendKeys("oussayd@gmail.com");
-        element.all(by.css('[name="st_passwd"]')).sendKeys("rafhaj14");
+        usernameInput.sendKeys("");
+        element.all(by.css('[name="st_passwd"]')).sendKeys("");
         element.all(by.css('[value="Se connecter"]')).click();
         browser.sleep(2000);
 
@@ -27,7 +27,7 @@ beforeAll(function () {
 });
 beforeEach(function () {
     browser.driver.manage().window().maximize();
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
 
     return browser.ignoreSynchronization = true;
 
@@ -36,28 +36,42 @@ dp(lbcData, function (data) {
     it('should add ' + data.titre, function () {
 
         browser.get('https://www2.leboncoin.fr/ai?ca=12_s').then(function () {
+            browser.sleep(Math.floor((Math.random() * 20000) + 10000));
+
             element(by.id(data.categorie)).click();
             element(by.id("subject")).sendKeys(data.titre);
             element(by.id("body")).sendKeys(data.desc);
             element(by.id("price")).sendKeys(data.prix);
             element(by.id("location_p")).sendKeys("94700");
-            browser.sleep(200);
+            browser.sleep(1000);
             element(by.css('[title="Maisons-Alfort"]')).click();
+            browser.sleep(1000);
+
             element(by.id("image0")).sendKeys(IMAGES_PATH + data.image0);
+            browser.sleep(1000);
+
             if (!!data.image1) {
                 element(by.id("image1")).sendKeys(IMAGES_PATH + data.image1);
+                browser.sleep(1000);
+
             }
             if (!!data.image2) {
                 element(by.id("image2")).sendKeys(IMAGES_PATH + data.image2);
+                browser.sleep(1000);
+
             }
-            browser.sleep(1000);
+            browser.sleep(Math.floor((Math.random() * 20000) + 10000));
+
             element(by.id("newadSubmit")).click();
-            //browser.sleep(1000);
+            browser.sleep(1000);
+
             browser.wait(protractor.ExpectedConditions.visibilityOf(element(by.id("accept_rule"))));
+            browser.sleep(Math.floor((Math.random() * 20000) + 10000));
 
             element(by.id("accept_rule")).click();
             element(by.id("lbc_submit")).click();
-            browser.sleep(2000);
+            browser.sleep(Math.floor((Math.random() * 20000) + 10000));
+
 
             expect(browser.getTitle()).toContain("Confirmation");
             browser.sleep(2000);
