@@ -40,7 +40,8 @@ exports.data = [
     {
         titre: "Barres de toit Touran Tiguan Zafira",
         desc: "Barres de toit Green Valley Trek 135cm neuves.\n" +
-        "Montage rapide et serrure antivol à clé (2 clés fournies).\n\n" +
+        "Montage rapide et serrure 
+        ol à clé (2 clés fournies).\n\n" +
         "Compatible avec les voitures avec barres longitudinales (les break, SW et les SUV) tel que les modèles suivants :\n" +
         "VW Touran\nVW Tiguan\nOpel Zafira A\nRenault Grand Scenic 3\nCitroen grand C4 picasso\nPeugeot SW",
 
@@ -79,7 +80,7 @@ exports.data = [
         image0: "ps4\\fifa17-01.jpeg",
         image1: "ps4\\fifa17-02.jpeg",
 
-        categorie: "cat6"
+        categorie: "cat43"
     },
         {
         titre: "PES 2017 pour PS4 NEUF",
@@ -90,7 +91,7 @@ exports.data = [
         image0: "ps4\\pes2017-01.jpeg",
         image1: "ps4\\pes2017-02.jpeg",
 
-        categorie: "cat6"
+        categorie: "cat43"
     },
             {
         titre: "Casque intégral Axo Goblin Gris NEUF taille L",
@@ -106,7 +107,7 @@ exports.data = [
         image1: "moto\\casqueAxo-02.jpeg",
         image2: "moto\\casqueAxo-03.jpeg",
 
-        categorie: "cat6"
+        categorie: "cat3"
     },
       {
         titre: "Casque PlayStation 4 Gioteck HS-1 neuf",
@@ -114,7 +115,7 @@ exports.data = [
               "Rdv possible à la Défense, Les Halles ou garde de Lyon"      ,
         prix: "12",
         image0: "ps4\\Gioteck-01.jpeg",
-        categorie: "cat6"
+        categorie: "cat43"
     },    
         {
         titre: "Jeu PS4 Battleborn 4 neuf sous blister",
@@ -122,7 +123,7 @@ exports.data = [
               "Rdv possible à la Défense, Les Halles ou garde de Lyon"      ,
         prix: "5",
         image0: "ps4\\Battleborn-01.jpeg",
-        categorie: "cat6"
+        categorie: "cat43"
     },    
          {
         titre: "Kit Mains libres Bluetooth Supertooth neuf",
@@ -141,7 +142,7 @@ exports.data = [
               "Rdv possible à la Défense, Les Halles ou garde de Lyon"      ,
         prix: "15",
         image0: "moto\\AntivolCITADEL-01.jpeg",
-        categorie: "cat6"
+        categorie: "cat55"
     }
         ,    
          {
@@ -173,7 +174,7 @@ exports.data = [
         +"\nRdv possible à la Défense, Les Halles ou garde de Lyon"      ,
         prix: "23",
         image0: "acc\\sacQUIKSILVER-01.jpeg",
-        categorie: "cat6"
+        categorie: "cat47"
     }
               ,    
  {
@@ -192,6 +193,106 @@ exports.data = [
         image0: "barres\\peugeot206-01.jpeg",
         categorie: "cat6"
     }
+       ,  {
+        titre: "Sac Manfrotto STILE BELLA VI pour APN Reflex",
+        desc: "Grand sac d'épaule Manfrotto STILE BELLA VI Blanc pour appareil photo numérique Reflex avec 28-300mm + 1 Objectif + Flash"
+        +"\nEtat : neuf jamais utilisé"
+        +"\n\nPrix en magasin autour de 45Euro(s)"
+        +"\nCompatibles avec toutes les marques Canon Nikon Sony Pentax"      ,
+                prix: "25",
+        image0: "ht\\Manfrotto-01.jpeg",
+        categorie: "cat16"
+    }
+         ,  {
+        titre: "Barres De Toit en Aluminium pour Skoda Octavia II",
+        desc: "Barres De Toit en Aluminium pour Skoda Octavia II 2005-2008"
+        +"\nEtat : neuf "
+        +"\nRemise en main propre uniquement pas d'envoi"      ,
+                prix: "65",
+        image0: "barres\\Octavia-01.jpeg",
+        categorie: "cat6"
+    }
+              ,  {
+        titre: "Haut-parleur Kenwood KFC-X133 neuf",
+        desc: "Haut-parleur Kenwood KFC-X133 2 voies haute performances Woofer neuf"
+        +"\n\nCaractéristiques :"
+        +"\nType d'enceintes : Coaxial"
+        +"\nPuissance d'entrée de crête : 160W"
+        +"\nPuissance d'entrée nominale : 40W"
+        +"\nTaille des enceintes : 130mm"
+        +"\n\nValeur en magasin à plus de 100Euro(s)"      ,
+                      prix: "42",
+        image0: "auto\\Kenwood-01.jpeg",
+        categorie: "cat6"
+    }   
+         ,  {
+        titre: "Coffre de toit Bermude 4100 TBE",
+        desc: "Coffre de toit Bermude 4100 en très bon état"
+        +"\nGrande capacité de 410 litre"
+        +"\n\nSysteme fixation très rapide"
+        +"\nlongueur 173 cm"
+        +"\nlargeur 73 cm"
+        +"\nhauteur 42 cm"
+        +"\n\n75 kg de charge"      ,
+        prix: "155",
+        image0: "coffres\\Bermude-01.jpeg",
+        categorie: "cat6"
+    } ,  {
+        titre: "Tres belle Montre Seiko SRZ391P1 pour femme neuve",
+        desc: "Tres belle Montre Seiko SRZ391P1 pour femme neuve"
+        +"\nDans sa boite d'origine."
+        +"\nPrix en magasin autour de 200Euro(s)"
+        +"\nLa boite est un peu abimée mais la montre est toute neuve sans aucune trace d'utilisation ni rayure ni égratignure"
+        +"\n\nPas d'echange. Pas d'envoi."
+        +"\nRemise en main propre uniquement"
+        +"\nRdv possible à la Défense, Chatelet Les Halles ou Gare de Lyon"      ,
+                prix: "85",
+        image0: "montres\\SeikoSRZ391P1-01.jpeg",
+        categorie: "cat42"
+    } ,  {
+        titre: "Barres de toit Seat Leon ST neuves",
+        desc: "Barres de toit Atera 044 300 neuves jamais utilisées "
+        +"\nAdaptées parfaitement à Seat Leon ST depuis 11/2013"
+        +"\n\nPrix en magasin autour de 175Euro(s)"
+        +"\n\nMarque allemande de haute qualité"
+        +"\n\nBarre en acier haute résistance revêtu d'une gaine type plastique noire"
+        +"\nPièces en contact recouvertes d'un revêtement protégeant le véhicule"
+        +"\nVerrouillable avec un outil codé ou une clé rainurée selon modèle"      ,
+        prix: "75",
+        image0: "barres\\SeatLeonSt-01.jpeg",
+        categorie: "cat6"
+    } ,  {
+        titre: "Sac Bandouliere Clairefontaine 1951 neuf",
+        desc: "Sac Bandouliere Clairefontaine 1951 neuf"
+        +"\nDimensions: 7,5 x 34 x 40 cm"
+        +"\n\nRdv possible à la Défense, Chatelet Les Halles ou Gare de Lyon"      ,
+        prix: "13",
+        image0: "acc\\Clairefontaine-01.jpeg",
+        categorie: "cat47"
+    } ,  {
+        titre: "Montre noire originale Guess W65023L2 pour Femme",
+        desc: "A vendre tres belle montre noire originale Guess W65023L2 pour Femme"
+        +"\nQuartz Analogique - Cadran Noir - Bracelet Caoutchouc Noir"
+        +"\nEtat : neuve dans sa boite d'origine jamais portée"
+        +"\n\nPrix en magasin 99Euro(s)"
+        +"\n\nRemise en main propre uniquement"      ,
+        prix: "50",
+        image0: "montres\\GuessW65023L2-01.jpeg",
+        categorie: "cat42"
+    } ,  {
+        titre: "Barre de toit Atera neuves pour Skoda Fabia",
+        desc: "Barre de toit Atera neuves pour Skoda Fabia depuis 04/2007 "
+        +"\nMarque allemande de très haute qualité "
+        +"\n\nBarre en acier haute résistance revêtu d'une gaine type plastique noire"
+        +"\nPièces en contact recouvertes d'un revêtement protégeant le véhicule"
+        +"\nVerrouillable avec un outil codé ou une clé rainurée selon modèle"
+        +"\n\nPrix en magasin autour de 180Euro(s)"      ,
+        prix: "75",
+        image0: "barres\\AteraSkodaFabia-01.jpeg",
+        categorie: "cat6"
+    }
         
+        
+
 ]
 
