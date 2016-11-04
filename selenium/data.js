@@ -91,6 +91,24 @@ exports.data = [
         image1: "ps4\\pes2017-02.jpeg",
 
         categorie: "cat6"
-    }
+    },
+            {
+        titre: "Casque intégral Axo Goblin Gris NEUF taille L",
+        desc: "Casque moto intégral Axo Goblin Gris taille L NEUF dans sa boite jamais utilisé.\n\n" +
+        "Visière amovible d'injecté anti-rayures\n"+
+        "Écran solaire intégré coulissant, avec réglage externe\n"+
+        "Homologué ECE 22/05 approuvé\n"+
+        "Antiallergique et anti-sueur doublure lavable amovible."
+        ,
+
+        prix: "45",
+        image0: "moto\\casqueAxo-01.jpeg",
+        image1: "moto\\casqueAxo-02.jpeg",
+        image2: "moto\\casqueAxo-03.jpeg",
+
+        categorie: "cat6"
+    },
+        
+       
 ]
 
