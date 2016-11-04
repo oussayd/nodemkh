@@ -69,6 +69,28 @@ exports.data = [
         image1: "barres\\originalAlu-02.jpeg",
 
         categorie: "cat6"
+    },
+        {
+        titre: "Jeu Fifa 17 pour PS4",
+        desc: "Fifa 17 pour PS4 comme neuf.\n\n" +
+        "Prix ferme.\nRdv possible à la Défense, Les Halles ou garde de Lyon.",
+
+        prix: "48",
+        image0: "ps4\\fifa17-01.jpeg",
+        image1: "ps4\\fifa17-02.jpeg",
+
+        categorie: "cat6"
+    },
+        {
+        titre: "PES 2017 pour PS4 NEUF",
+        desc: "Jeu playstation 4 PES 2017 NEUF sous blister.\n\n" +
+        "Prix ferme.\nRdv possible à la Défense, à Chatelet les Halles ou à Garde de Lyon.",
+
+        prix: "35",
+        image0: "ps4\\pes2017-01.jpeg",
+        image1: "ps4\\pes2017-02.jpeg",
+
+        categorie: "cat6"
     }
 ]
 
