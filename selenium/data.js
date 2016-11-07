@@ -317,6 +317,24 @@ exports.data = [
      image1: "barres\\peugeot206-02.jpeg",
      image2: "barres\\peugeot206-03.jpeg",
      categorie: "cat6"
+     },
+     {
+         //https://www.amazon.fr/dp/B00OBST9NQ?&snoop-from=2&snoop-from-asin=B00OBST9NQ
+     titre: "Bonnet Ecouteurs Bluetooth Archos Music Beany",
+     desc: "Bonnet Bluetooth avec écouteurs et kit main libre avec micro intégré.\n Compatible avec tous les Smartphones.\n"
+         + "Neuf dans son emballage d'origine.\nTaille unique.",
+     prix: "15",
+     image0: "ht\\archosBeany-01.jpeg",
+     categorie: "cat6"
+     },
+     {
+         //https://www.amazon.fr/dp/B00ZA24E7S?snoop-from=1&snoop-from-asin=B00ZI9S49W&th=1&psc=1
+     titre: "The North Face Resolve Down Veste Homme Tnf Black/Tnf",
+     desc: "Version chaude de la veste imperméable et respirante Resolve Jacket. "
+         +"Que votre environnement naturel soit urbain ou alpin, vous pouvez compter sur cette veste pour vous protéger contre le froid et les pires déluges. Avec la technologie HyVent™ qui contribue à l'imperméabilité et la respirabilité, elle ne laisse passer ni la neige ni la pluie.",
+     prix: "80",
+     image0: "vtmnt\\northFace-01.jpeg",
+     categorie: "cat6"
      }
 
 
