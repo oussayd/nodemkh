@@ -16,6 +16,7 @@ var RECONDITIONNE = require('./utils/reconditionne.js');
 var NOUVEAU = require('./utils/nouveau.js');
 var USER_AGENTS = require('./utils/userAgents.js');
 
+
 // mongoose for mongodb
 mongoose.connect('mongodb://localhost:27017/amazon'); // connect to mongoDB database on modulus.io
 
@@ -24,9 +25,9 @@ var lienInfo = {
     CATEGORIE: 'MONTRES',
     LINK: "https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A60649031%2Cp_89%3AHugo+Boss%7CSamsung%7CFossil%7CPolice%7CSeiko%7CLotus&page={0}&bbn=3581943031&ie=UTF8&qid=1476728791"
 }
-var searchList  = RECONDITIONNE.BARRES_TOIT;
-//var searchList = RECONDITIONNE.UK;
-//var searchList = NOUVEAU.FR;
+var searchList  = RECONDITIONNE.TOP;
+//var searchList = RECONDITIONNE.DE;
+//var searchList = NOUVEAU.BARRES_TOIT;
 var indexLien = 0;
 var links = [];
 for (var key in searchList) {
@@ -34,6 +35,7 @@ for (var key in searchList) {
         links.push(searchList[key]);
     }
 }
+
 
 var isNew = true;
 var UPDATE_DB = false;
@@ -53,6 +55,7 @@ var Deal = mongoose.model('Deal', {
     stock: Number,
     reduction: Number,
     reductionGlobale: Number,
+    reductionEstim: Number,
     img: String,
     lastUpdate: Date,
     version: Number
@@ -74,14 +77,48 @@ var urlInfo;
 var baseUrl;
 var $;
 
+
+var lastPricesEstim =[];
+
+var getReductionEstim = function(nouveauPrix){
+    var moyenne = moyennePrixEstim();
+    var reducEstim =100;
+    if (moyenne>0) {
+     reducEstim =  nouveauPrix*100/moyenne ;
+    }
+    updateListPricesEstim(nouveauPrix);
+    console.log("moyenne : " +moyenne + " lastPricesEstim : " + lastPricesEstim );
+    return reducEstim.toFixed(2);
+}
+
+var updateListPricesEstim = function(nouveauPrix){
+    if (lastPricesEstim.length>=7){
+        lastPricesEstim.splice(0,1);
+    }
+    lastPricesEstim.push(nouveauPrix);
+}
+
+var moyennePrixEstim = function() {
+    var moyenne =0;
+    var sum = 0;
+    if (lastPricesEstim.length>0){
+        for (var i = 0; i < lastPricesEstim.length; i++) {
+            sum += lastPricesEstim[i];
+        }
+        moyenne= sum/lastPricesEstim.length;
+    }
+    return moyenne;
+}
+
+
 var recherchePrix = function (indexL) {
 
+    lastPricesEstim =[];
     lienInfo = links[indexL];
 
     urlInfo = commun.getUrlInfos(compile(lienInfo.LINK)(1));
     baseUrl = commun.baseUrlTemplate(urlInfo.locale);
 
-    console.log(urlInfo);
     pageIndex = 1;
 
 
@@ -94,7 +131,7 @@ var recherchePrix = function (indexL) {
 var searchLoop = function () {
 
     console.log("+++++++++++++++++++++++ Page " + pageIndex + " +++++++++++++++++++++++");
-    var url = compile(lienInfo.LINK)(pageIndex);
+    var url = compile(lienInfo.LINK)(pageIndex)+"&sort=price-desc-rank";
     console.log("[" + lienInfo.CATEGORIE + "] Page URL : " + url);
     scrapPricesFromPage(url)
         .then(checkNext);
@@ -223,7 +260,11 @@ function createNewDeal(asin, titre, prix, imgUrl, deferred, index) {
        // deferred.resolve(index);
     })
 }
+
 function updateAllLocales(deal, deferred, index) {
+    if (!!deal.asin) {
+         deal.reductionEstim =  getReductionEstim(deal.prix);
+    }
     updateLocalPrice(deal, "fr")
         .then(function () {
             updateLocalPrice(deal, "de")
@@ -232,9 +273,11 @@ function updateAllLocales(deal, deferred, index) {
                         .then(function () {
                             updateLocalPrice(deal, "co.uk")
                                 .then(function () {
-                                    deal.save();
-                                    console.log( numeroDeal +" - " + deal.asin + " saved");
+                                    if (!!deal.asin) {
 
+                                        deal.save();
+                                        console.log(numeroDeal + " - " + deal.asin + " saved");
+                                    }
                                         deferred.resolve(index);
 
 
@@ -296,8 +339,10 @@ function updateDeal(index, deferred) {
                 deferred.resolve(index);
         }
         else if (!deal) {
+            isNew = true;
             createNewDeal(asin, titre, prix, imgUrl, deferred, index);
         }else {
+            isNew = false;
             updateExistingDeal(deal, titre, asin, prix, imgUrl, deferred, index);
 
         }
@@ -407,7 +452,7 @@ function updateReduction(deal, prixLocal, pays, _urlLocale, deferred,delay) {
     if (pays === deal.pays) {
         deal.reduction = reduction;
     }
-    console.log(numeroDeal + " - " + _urlLocale + " p[" + deal.prix + "]" + " pL[" + prixLocal + "]" + " r[" + deal.reduction + "]" + " RG[" + deal.reductionGlobale + "]");
+    console.log(numeroDeal + " - " + _urlLocale + " p[" + deal.prix + "]" + " pL[" + prixLocal + "]" + " r[" + deal.reduction + "]"  + " RE[" + deal.reductionEstim + "]" + " RG[" + deal.reductionGlobale + "]");
    if(delay){
     setTimeout(function () {
         deferred.resolve();
@@ -416,6 +461,14 @@ function updateReduction(deal, prixLocal, pays, _urlLocale, deferred,delay) {
        deferred.resolve();
 
    }
+}
+
+var checkPrice = function(price){
+   return  (!!price && price >0);
+}
+
+var checkAnyPrice = function(prixLocaux){
+    return  checkPrice(prixLocaux["fr"]) || checkPrice(prixLocaux["de"]) || checkPrice(prixLocaux["it"]) ||checkPrice(prixLocaux["couk"]);
 }
 var updateLocalPrice = function (deal,pays) {
 
@@ -426,10 +479,12 @@ var updateLocalPrice = function (deal,pays) {
         console.log("updateLocalPrice : "  + deal.asin +" - "+ pays);
         deferred2.resolve();
     }, 2000);*/
-    if (!!deal.prixLocaux[pays.replace('.', '')] || deal.prixLocaux[pays.replace('.', '')] <0){
+    if (checkPrice(deal.prixLocaux[pays.replace('.', '')])){
         var prixLocal = deal.prixLocaux[pays.replace('.', '')].toFixed(2);
         updateReduction(deal, prixLocal, pays, _urlLocale, deferred,false);
 
+    }else if (!isNew && checkAnyPrice(deal.prixLocaux)){
+        deferred.resolve();
     }else
     {
         if (!UPDATE_DB){

@@ -20,7 +20,10 @@ beforeAll(function () {
         var usernameInput = element(by.css('[name="st_username"]'));
         browser.wait(protractor.ExpectedConditions.visibilityOf(usernameInput));
 
-    element.all(by.id('connect_button')).click();
+        usernameInput.sendKeys("oussayd@gmail.com");
+       // usernameInput.sendKeys("mohamed.khaireddine@gmail.com");
+        element.all(by.css('[name="st_passwd"]')).sendKeys("rafhaj14");
+        element.all(by.id('connect_button')).click();
         browser.sleep(2000);
 
     });
@@ -36,7 +39,7 @@ beforeEach(function () {
 dp(lbcData, function (data) {
     it('should add ' + data.titre, function () {
 
-        browser.get('https://www2.leboncoin.fr/ai?ca=12_s').then(function () {
+        browser.get('https://www.leboncoin.fr/ai?ca=12_s').then(function () {
             browser.sleep(Math.floor((Math.random() * 20000) + 10000));
 
             element(by.id(data.categorie)).click();
@@ -45,8 +48,8 @@ dp(lbcData, function (data) {
             element(by.id("price")).sendKeys(data.prix);
 
           //  element.all(by.css('icon-close-circle-outline icon-2x'))[0].click();
-            var cp = !!data.cp?data.cp:"94700";
-            var ville = !!data.ville?data.ville:"Maisons-Alfort";
+            var cp = !!data.cp?data.cp:"78180";
+            var ville = !!data.ville?data.ville:"Montigny-le-Bretonneux";
             element(by.id("location_p")).clear();
 
             element(by.id("location_p")).sendKeys(cp);
@@ -69,6 +72,8 @@ dp(lbcData, function (data) {
 
             }
             if (!!data.tel) {
+                element(by.id("phone")).clear();
+
                 element(by.id("phone")).sendKeys(data.tel);
             }
             browser.sleep(Math.floor((Math.random() * 20000) + 10000));

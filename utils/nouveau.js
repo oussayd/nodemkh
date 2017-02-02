@@ -158,8 +158,9 @@ var NOUVEAU = {
         CHAUSSURES: {
 
             CATEGORIE: 'CHAUSSURES SOLDES NEW',
-            LINK: 'https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A215934031%2Cp_6%3AA1X6FK5RDHNB96%2Cn%3A%21215935031%2Cn%3A1765042031%2Cp_76%3A437878031%2Cp_89%3AClarks%7CTommy+Hilfiger%7CClarks+Originals%7CTimberland%7CCaterpillar%7CSebago%7CSebag%C3%B2%7CNew+Balance%7CKaporal&page={0}&bbn=1765042031&ie=UTF8&qid=1467189745'
-
+            //LINK: 'https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A215934031%2Cp_6%3AA1X6FK5RDHNB96%2Cn%3A%21215935031%2Cn%3A1765042031%2Cp_76%3A437878031%2Cp_89%3AClarks%7CTommy+Hilfiger%7CClarks+Originals%7CTimberland%7CCaterpillar%7CSebago%7CSebag%C3%B2%7CNew+Balance%7CKaporal&page={0}&bbn=1765042031&ie=UTF8&qid=1467189745'
+          //  LINK:'https://www.amazon.de/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A355006011%2Cn%3A%21361139011%2Cn%3A1760296031%2Cp_6%3AA3JWKAKR8XB7XF%2Cp_76%3A2414661031%2Cp_89%3ATimberland%7CConverse%7CTommy+Hilfiger%7CGeox%7CAsics%7Cadidas%7CBirkenstock%7CReebok%7CClarks%7CSebago%7CSebag%C3%B2%7CPuma%7CNike%7CCaterpillar&page={0}&bbn=1760296031&sort=price-asc-rank&ie=UTF8&qid=1478716351'
+            LINK:'https://www.amazon.de/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A355006011%2Cn%3A%21361139011%2Cn%3A1760296031%2Cp_6%3AA3JWKAKR8XB7XF%2Cp_76%3A2414661031%2Cp_89%3ATommy+Hilfiger%7CColumbia%7CCalvin+Klein%7CCalvin+Klein+Jeans%7CGuess&page={0}&bbn=1760296031&sort=price-asc-rank&ie=UTF8&qid=1478726687'
         }
     },
 

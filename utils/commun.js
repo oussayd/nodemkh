@@ -77,10 +77,10 @@ var blackList = [
     "GANT Damen", "TOC03", "Excellanc", "GOBU", "Prince London", "Calypso", "Autran & Viala", "Apricassa", "JSDDE", "Joannis Meursii", "Tikkers", "fiimi",
     "Spider Man", "G10 NATO MOD", "REFLEX BOYS", "AWStech", "LEORX LED", "Ravel", "Georgie", "Mudder", "FORTIS", "ZeitPunkt", "Reflex Kinder", "AMPM24",
     "Feld Rennen", "Tinksky", "Moshi Monsters", "iStrap", "Tikkers", "Genießen", "BABAN", "SPIDERMAN", "Predator", "Berger & Schröter", "JCC", "Tikkers", "Surwin",
-    "Montre Watch Color", "SKMEI", "Riccardo", "Panegy", "Zeiger", "NRS Healthcare", "maxhood", "KS Bracelet", "Sekonda", "Kronen&Söhne", "Shaghafi", "Souarts Damen"
+    "Montre Watch Color", "SKMEI","Casio", "Riccardo", "Panegy", "Zeiger", "NRS Healthcare", "maxhood", "KS Bracelet", "Sekonda", "Kronen&Söhne", "Shaghafi", "Souarts Damen"
 ];
 var whiteList = [
-    "Boss", "Calvin Klein", "Casio", "Cerruti", "Citizen", "Diesel", "DKNY", "Emporio", "Armani", "Festina", "Fossil", "Guess", "Hamilton", "Ice-Watch", "Paul Gaultier",
+    "Boss", "Calvin Klein",  "Cerruti", "Citizen", "Diesel", "DKNY", "Emporio", "Armani", "Festina", "Fossil", "Guess", "Hamilton", "Ice-Watch", "Paul Gaultier",
     "Lacoste", "Lotus", "Maserati", "Burton", "Police", "Pulsar", "Sector", "Seiko", "Swatch", "Ted Lapidus", "Tissot"
 ];
 var articleUrlTemplate = compile("http://www.amazon.{0}/dp/{1}");
