@@ -1,5 +1,24 @@
 var RECONDITIONNE = {
 
+
+PC : {
+	FR: {CATEGORIE: 'PC', 
+    LINK :'https://www.amazon.fr/gp/search/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A340858031%2Cn%3A%21340859031%2Cn%3A429879031&page={0}&bbn=3581943031&ie=UTF8&qid=1496862104'
+    }, 
+	DE : {CATEGORIE: 'PC', 
+	LINK :'https://www.amazon.de/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A340843031%2Cn%3A%21340844031%2Cn%3A427957031&page={0}&bbn=3581963031&ie=UTF8&qid=1496862341'
+	}, 
+	
+	UK : {CATEGORIE: 'PC', 
+	LINK :'https://www.amazon.co.uk/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581866031%2Cn%3A340831031%2Ck%3Alaptops%2Cp_72%3A419153031%2Cn%3A%21340832031%2Cn%3A429886031&page={0}&bbn=3581866031&keywords=laptops&ie=UTF8&qid=1496862413'
+	} 
+},
+    FLASH : {
+      ANDROID_TV : {
+          CATEGORIE: 'ANDROID TV',
+          LINK : 'https://www.amazon.fr/s/ref=sr_pg_{0}?rh=n%3A3581943031%2Cn%3A13921051%2Ck%3Aandroid+tv&page={0}&bbn=3581943031&sort=price-desc-rank&keywords=android+tv&ie=UTF8&qid=1489213389'
+      }
+    },
     SELECTION_30100: {
         DE_CUISINE: {
             CATEGORIE: 'CUISINE 30',
@@ -452,6 +471,13 @@ var RECONDITIONNE = {
 
     },
     TOP: {
+		
+		 deCOMPUTERS: {
+         PAYS: 'DE',
+         CATEGORIE: 'PC',
+         LINK: 'https://www.amazon.de/s/ref=sr_pg_{0}?rh=n%3A3581963031%2Cn%3A340843031%2Cn%3A%21340844031%2Cn%3A429870031&page={0}&bbn=3581963031'
+
+         },
 
         /*     /!*
          //----------------------DE-----------------------------
@@ -530,12 +556,12 @@ var RECONDITIONNE = {
             CATEGORIE: 'SPORT',
             LINK: 'https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A325614031&page={0}&bbn=3581943031&sort=price-desc-rank&ie=UTF8&qid=1465444976'
         },
-        /*
+        
          PC_FR: {
          CATEGORIE: 'PC',
          LINK: 'https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A340858031%2Cn%3A%21340859031%2Cn%3A429879031&page={0}&bbn=3581943031&sort=price-desc-rank&ie=UTF8&qid=1465445201'
          },
-         */
+         
         MONTRES_FR: {
             CATEGORIE: 'MONTRES',
             LINK: 'https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A60649031&page={0}&bbn=3581943031&ie=UTF8&qid=1464733427'
@@ -882,13 +908,13 @@ var RECONDITIONNE = {
             LINK: 'https://www.amazon.de/s/ref=sr_pg_{0}?rh=n%3A3581963031%2Cn%3A193707031&page={0}&bbn=3581963031&ie=UTF8&qid=1464319558'
         },
 
-        /*
+        
          deCOMPUTERS: {
          PAYS: 'DE',
-         CATEGORIE: 'COMPUTERS',
+         CATEGORIE: 'PC',
          LINK: 'http://www.amazon.de/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A562066%2Cn%3A%21569604%2Cn%3A1626220031&page={0}&bbn=3581963031'
 
-         },*/
+         },
         dePORTABLE: {
             PAYS: 'DE',
             CATEGORIE: 'PORTABLE',
@@ -1166,14 +1192,14 @@ var RECONDITIONNE = {
             CATEGORIE: 'AUTO_MOTO',
             LINK: 'http://www.amazon.fr/s/ref=sr_pg_{0}?page={0}&fst=as%3Aoff&rh=i%3Aautomotive&bbn=3581943031&ie=UTF8&qid=1457391171'
         },*/
-        /*      SAC_CHAUSSURES: {
+             SAC_CHAUSSURES: {
          PAYS: 'FR',
          CATEGORIE: 'SAC_CHAUSSURES',
          LINK: 'http://www.amazon.fr/s/rh=i%3Ashoes/ref=sr_pg_{0}?page={0}&_encoding=UTF8&bbn=3581943031&pf_rd_m=A1X6FK5RDHNB96&pf_rd_s=merchandised-search-leftnav&pf_rd_r=127G87VY0XHSTB7SFHSB&pf_rd_t=101&pf_rd_p=598086127&pf_rd_i=3581943031'
          },
 
 
-         */
+
 
         HT: {
             PAYS: 'FR',
@@ -1181,12 +1207,12 @@ var RECONDITIONNE = {
             LINK: 'http://www.amazon.fr/s/ref=sr_pg_{0}?page={0}&fst=as%3Aoff&rh=i%3Aelectronics&bbn=3581943031&ie=UTF8&qid=1457248309'
         },
 
-        /*    BEBE: {
+           BEBE: {
          PAYS: 'FR',
          CATEGORIE: 'SELECTION BEBE',
          LINK: 'http://www.amazon.fr/s/ref=sr_pg_{0}?page={0}&fst=as%3Aoff&rh=i%3Ababy&bbn=8873224031&ie=UTF8&qid=1457980645'
          },
-         */
+
         CUISINE_PETIT_ELECTRO: {
             PAYS: 'FR',
             CATEGORIE: 'SELECTION CUISINE',
@@ -1205,11 +1231,11 @@ var RECONDITIONNE = {
             LINK: 'https://www.amazon.fr/s/ref=sr_pg_{0}?rh=n%3A3581943031%2Cn%3A1571265031&page={0}&bbn=3581943031&ie=UTF8&qid=1464662035'
         },
 */
-        /*   MONTRES: {
+          MONTRES: {
          PAYS: 'FR',
          CATEGORIE: 'MONTRES',
          LINK: 'http://www.amazon.fr/s/ref=sr_pg_{0}?page={0}&fst=as%3Aoff&rh=i%3Awatches&bbn=3581943031&ie=UTF8&qid=1457248309'
-         },*/
+         },
         MAISON_CUISINE: {
             PAYS: 'FR',
             CATEGORIE: 'MAISON_CUISINE',
@@ -1231,28 +1257,28 @@ var RECONDITIONNE = {
             CATEGORIE: 'BIJOUX',
             LINK: 'http://www.amazon.fr/s/rh=i%3Ajewelry/ref=sr_pg_{0}?page={0}&_encoding=UTF8&bbn=3581943031&pf_rd_m=A1X6FK5RDHNB96&pf_rd_s=merchandised-search-leftnav&pf_rd_r=0P8PMECV8RWREYQTGCGA&pf_rd_t=101&pf_rd_p=598086127&pf_rd_i=3581943031'
         },
-        TABLETTES: {
+        /*TABLETTES: {
             PAYS: 'FR',
             CATEGORIE: 'TABLETTES',
             LINK: 'http://www.amazon.fr/s/rh=i%3Acomputers%2Cn%3A3581943031%2Cn%3A340858031%2Cn%3A%21340859031%2Cn%3A429882031/ref=sr_pg_{0}?page={0}&_encoding=UTF8&bbn=3581943031&pf_rd_m=A1X6FK5RDHNB96&pf_rd_s=merchandised-search-leftnav&pf_rd_r=0P8PMECV8RWREYQTGCGA&pf_rd_t=101&pf_rd_p=598086127&pf_rd_i=3581943031'
-        },
+        },*/
         TEL: {
             PAYS: 'FR',
             CATEGORIE: 'TEL',
             LINK: 'http://www.amazon.fr/s/rh=i%3Aelectronics%2Cn%3A3581943031%2Cn%3A13921051%2Cn%3A%2113910671%2Cn%3A14060661/ref=sr_pg_{0}?page={0}&_encoding=UTF8&bbn=3581943031&pf_rd_m=A1X6FK5RDHNB96&pf_rd_s=merchandised-search-leftnav&pf_rd_r=048RWJBDD2EM81ZGA20V&pf_rd_t=101&pf_rd_p=598086127&pf_rd_i=3581943031'
         },
-/*
+
         JEUX_VIDEO: {
             PAYS: 'FR',
             CATEGORIE: 'JEUX_VIDEO',
             LINK: 'http://www.amazon.fr/s/rh=i%3Avideogames%2Cn%3A3581943031%2Cn%3A530490%2Cn%3A%21548014%2Cn%3A548738/ref=sr_pg_{0}?page={0}&_encoding=UTF8&bbn=3581943031&pf_rd_m=A1X6FK5RDHNB96&pf_rd_s=merchandised-search-leftnav&pf_rd_r=1C4D9XK5G01QCZ0PBYQT&pf_rd_t=101&pf_rd_p=598086127&pf_rd_i=3581943031'
         },
-  */      /*
+      /*
          LUMINAIRE: {
          PAYS: 'FR',
          CATEGORIE: 'LUMINAIRE',
          LINK: 'http://www.amazon.fr/s/rh=i%3Alighting/ref=sr_pg_{0}?page={0}&_encoding=UTF8&bbn=3581943031&pf_rd_m=A1X6FK5RDHNB96&pf_rd_s=merchandised-search-leftnav&pf_rd_r=1C4D9XK5G01QCZ0PBYQT&pf_rd_t=101&pf_rd_p=598086127&pf_rd_i=3581943031'
-         },
+         },*/
          AMEUBLEMENT: {
          PAYS: 'FR',
          CATEGORIE: 'AMEUBLEMENT',
@@ -1268,7 +1294,7 @@ var RECONDITIONNE = {
          CATEGORIE: 'RANGEMENT',
          LINK: 'http://www.amazon.fr/s/ref=sr_pg_{0}?page={0}&fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A57004031%2Cn%3A%2157686031%2Cn%3A2916060031&bbn=3581943031&ie=UTF8&qid=1457248333&rnid=3581943031'
          },
-
+/*
          COUTEAUX: {
          PAYS: 'FR',
          CATEGORIE: 'COUTEAUX',
@@ -1295,7 +1321,7 @@ var RECONDITIONNE = {
             CATEGORIE: 'BAGAGES',
             LINK: 'http://www.amazon.fr/s/rh=i%3Aluggage/ref=sr_pg_{0}?page={0}&_encoding=UTF8&bbn=3581943031&pf_rd_m=A1X6FK5RDHNB96&pf_rd_s=merchandised-search-leftnav&pf_rd_r=127G87VY0XHSTB7SFHSB&pf_rd_t=101&pf_rd_p=598086127&pf_rd_i=3581943031'
         },
-        /*   VETEMENTS: {
+           VETEMENTS: {
          PAYS: 'FR',
          CATEGORIE: 'VETEMENTS',
          LINK: 'http://www.amazon.fr/s/rh=i%3Aclothing/ref=sr_pg_{0}?page={0}&_encoding=UTF8&bbn=3581943031&pf_rd_m=A1X6FK5RDHNB96&pf_rd_s=merchandised-search-leftnav&pf_rd_r=127G87VY0XHSTB7SFHSB&pf_rd_t=101&pf_rd_p=598086127&pf_rd_i=3581943031'
@@ -1335,7 +1361,7 @@ var RECONDITIONNE = {
          PAYS: 'FR',
          CATEGORIE: 'SELECTION MOBILE',
          LINK: 'http://www.amazon.fr/s/ref=sr_pg_{0}?page={0}&fst=as%3Aoff&rh=n%3A8873224031%2Cn%3A13921051%2Cn%3A%2113910671%2Cn%3A14060661&bbn=8873224031&ie=UTF8&qid=1457987761&rnid=8873224031'
-         },
+         },/*
          JEUX: {
          PAYS: 'FR',
          CATEGORIE: 'SELECTION JEUX',

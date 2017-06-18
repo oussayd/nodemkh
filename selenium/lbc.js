@@ -1,7 +1,7 @@
 var dp = require('jasmine-data-provider'); //Install the npm package and provide its path
 var lbcData = require('./data.js').data;
 var EC = protractor.ExpectedConditions;
-var IMAGES_PATH = "C:\\Users\\khaireddinem\\Google Drive\\leboncoin\\selenium\\";
+var IMAGES_PATH = "C:\\Users\\MOHAMED\\Google Drive\\leboncoin\\selenium\\";
 
 //Authentification sur le site l b c
 beforeAll(function () {
@@ -11,12 +11,7 @@ beforeAll(function () {
     https://compteperso.leboncoin.fr/account/index.html?ca=12_s
      */
     browser.get('https://compteperso.leboncoin.fr/account/index.html?ca=12_s').then(function () {
-      /*  var connectBtn = element.all(by.css('[data-popin-template="connexion"]')).get(1);
-        //  browser.sleep(2000);
-        browser.wait(protractor.ExpectedConditions.visibilityOf(connectBtn));
-        connectBtn.click();
-*/
-        //browser.sleep(2000);
+      
         var usernameInput = element(by.css('[name="st_username"]'));
         browser.wait(protractor.ExpectedConditions.visibilityOf(usernameInput));
 
@@ -25,7 +20,20 @@ beforeAll(function () {
         element.all(by.css('[name="st_passwd"]')).sendKeys("rafhaj14");
         element.all(by.id('connect_button')).click();
         browser.sleep(2000);
+        element(by.id('allChecked_top')).click();
+		        browser.sleep(2000);
 
+		element(by.css('a.remove')).click();
+		        browser.sleep(2000);
+
+		
+
+		browser.executeScript("window.scrollTo(0, document.body.scrollHeight);").then(function() {
+				element(by.css('input[type="submit"]')).click();
+		})
+        browser.sleep(2000);
+		
+		
     });
 
 });

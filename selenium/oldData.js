@@ -2,7 +2,32 @@
  * Created by khaireddinem on 14/11/2016.
  */
 [
+    {
+        titre: "Jeu PES 2017 PlayStation 4 comme neuf",
+        desc: "PES 2017 pour PS4 comme neuf.\n " +
+        "Prix ferme.\n " ,
+        //+
+        //  "Rdv possible à la Défense,Auber ou châtelet les Halles\n" +
 
+        prix: "29",
+        image0: "ps4\\pes-ma-01.jpg",
+        categorie: "cat43",
+        tel: "0661251165"
+    },
+    {
+        titre: "Sac Manfrotto STILE BELLA VI neuf Reflex",
+        desc: "Grand sac d'épaule Manfrotto STILE BELLA VI Blanc pour APN appareil photo numérique Reflex avec 28-300mm + 1 Objectif + Flash"
+        + "\nEtat : neuf jamais utilisé"
+        + "\n\nPrix en magasin autour de 45Euro(s)"
+        + "\nCompatibles avec toutes les marques Canon Nikon Sony Pentax",
+        prix: "25",
+        image0: "ht\\Manfrotto-01.jpg",
+        image1: "ht\\Manfrotto-02.jpg",
+        image2: "ht\\Manfrotto-03.jpg",
+
+        categorie: "cat16",
+        tel: "0661251165"
+    },
     {
         //https://www.amazon.fr/dp/B00ZA24E7S?snoop-from=1&snoop-from-asin=B00ZI9S49W&th=1&psc=1
         titre: "Chaines de neige Thule CB-12 102 comme neuves",

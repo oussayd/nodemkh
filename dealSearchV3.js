@@ -25,7 +25,12 @@ var lienInfo = {
     CATEGORIE: 'MONTRES',
     LINK: "https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A60649031%2Cp_89%3AHugo+Boss%7CSamsung%7CFossil%7CPolice%7CSeiko%7CLotus&page={0}&bbn=3581943031&ie=UTF8&qid=1476728791"
 }
-var searchList  = RECONDITIONNE.TOP;
+
+//var searchList  = RECONDITIONNE.BARRES_TOIT;
+/* var searchList  = RECONDITIONNE["FR"];
+*/ var searchList  = RECONDITIONNE["PC"];
+
+//var searchList  = RECONDITIONNE.TOP;
 //var searchList = RECONDITIONNE.DE;
 //var searchList = NOUVEAU.BARRES_TOIT;
 var indexLien = 0;
@@ -210,7 +215,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl) {
             }
         })
         .catch(function (err) {
-            console.log("err");
+            console.log("err--" + err);
             deferred.resolve();
 
         });
@@ -426,15 +431,21 @@ var uA = getRandomUserAgent();
 var nbReqs = 0;
 var reqOptions = function (_url) {
     nbReqs++;
-    if (nbReqs%25==0){
+  //  if (nbReqs%25==0){
      uA = getRandomUserAgent();
-    }
+   // console.log(uA);
+    //}
     return {
         url: _url
         ,
         headers: {
-            'User-Agent':uA
-
+            'User-Agent':uA,
+			'Host':'www.amazon.fr'
+			//'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+			//'Accept-Encoding':'gzip, deflate, sdch, br',
+			//'Accept-Language':'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4,ar;q=0.2',
+			//'Cache-Control':'max-age=0',
+			//'Connection':'keep-alive'
               // 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
               //  'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
             //'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0'
