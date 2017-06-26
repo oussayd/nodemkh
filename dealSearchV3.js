@@ -28,7 +28,11 @@ var lienInfo = {
 
 //var searchList  = RECONDITIONNE.BARRES_TOIT;
 /* var searchList  = RECONDITIONNE["FR"];
-*/ var searchList  = RECONDITIONNE["PC"];
+*/ 
+//var searchList  = RECONDITIONNE["PC"];
+var args = process.argv.slice(2);
+
+ var searchList  = RECONDITIONNE[args];
 
 //var searchList  = RECONDITIONNE.TOP;
 //var searchList = RECONDITIONNE.DE;
@@ -439,8 +443,8 @@ var reqOptions = function (_url) {
         url: _url
         ,
         headers: {
-            'User-Agent':uA,
-			'Host':'www.amazon.fr'
+            'User-Agent':uA
+			//'Host':'www.amazon.fr'
 			//'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 			//'Accept-Encoding':'gzip, deflate, sdch, br',
 			//'Accept-Language':'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4,ar;q=0.2',
