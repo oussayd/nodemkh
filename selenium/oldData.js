@@ -352,6 +352,23 @@
         image1: "montres\\SeikoSRZ391P1-02.jpeg",
         categorie: "cat42",
         tel: "0661251165"
-    }
+    },
+     {
+          titre: "Chaines de neige Maggi Trak LT 53 neuves",
+          desc: "Chaines de neige Maggi Trak LT 53 neuves spécial 4x4.\n" +
+          "Prix en magasin autour de 350€ - 400€ \n\n" +
+          "Montage et démontage facile et ultra rapide " +
+          "Compatible avec les pneux suivants : \n" +
+          "225/75 R17\n225/75 R17,5\n285/55 R18\n265/55-19\n265/50-20\n295/45-20\n" +
+          "31/10,5 - 5\n" +
+          "31/11,5 - 15",
+          prix: "120",
+          image0: "chaines\\maggiTrackT53-01.jpg",
+          image1: "chaines\\maggiTrackT53-02.jpg",
+          image2: "chaines\\maggiTrackT53-03.jpg",
+          categorie: "cat6",
+          tel: "0661251165"
+      }
+  
 
 ]

@@ -27,9 +27,10 @@ var lienInfo = {
 }
 
 //var searchList  = RECONDITIONNE.BARRES_TOIT;
-/* var searchList  = RECONDITIONNE["FR"];
-*/ var searchList  = RECONDITIONNE["PC"];
-
+ var searchList  = RECONDITIONNE["FR"];
+ 
+/*var searchList  = RECONDITIONNE["PC"];
+*/
 //var searchList  = RECONDITIONNE.TOP;
 //var searchList = RECONDITIONNE.DE;
 //var searchList = NOUVEAU.BARRES_TOIT;
