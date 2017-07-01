@@ -1,5 +1,41 @@
 var RECONDITIONNE = {
+    CASQUEANTIBRUIT: {
 
+        FR: {
+            CATEGORIE: 'CASQUE ANTIBRUIT',
+            LINK: 'https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A13921051%2Cn%3A%2113910671%2Cn%3A1455795031%2Cn%3A1456040031%2Cn%3A14054961%2Cp_n_feature_seven_browse-bin%3A1602922031&page={0}&bbn=3581943031&sort=price-desc-rank&ie=UTF8&qid=1498681757'
+        },
+
+        DE: {
+            CATEGORIE: 'CASQUE ANTIBRUIT',
+            LINK: "https://www.amazon.de/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A562066%2Cn%3A%21569604%2Cn%3A571760%2Cn%3A1382748031%2Cn%3A570278%2Cp_n_feature_keywords_four_browse-bin%3A4932231031&page={0}&bbn=3581963031&ie=UTF8&qid=1498849005"
+        },
+        UK: {
+            CATEGORIE: 'CASQUE ANTIBRUIT',
+            LINK: "https://www.amazon.co.uk/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581866031%2Cn%3A560798%2Cn%3A%21560800%2Cn%3A560884%2Cn%3A560910%2Cn%3A4085731%2Cn%3A310193011&page={0}&bbn=3581866031&ie=UTF8&qid=1498849626"
+        }
+    },
+    CASQUE: {
+
+        FR_ALL: {
+            CATEGORIE: 'CASQUE',
+            LINK: 'https://www.amazon.fr/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A13921051%2Cn%3A%2113910671%2Cn%3A1455795031%2Cn%3A1456040031%2Cn%3A14054961&page={0}&bbn=3581943031&sort=price-desc-rank&ie=UTF8&qid=1498682318'
+        },
+        DE: {
+            CATEGORIE: 'CASQUE',
+            LINK: 'https://www.amazon.de/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A562066%2Cn%3A%21569604%2Cn%3A571760%2Cn%3A1382748031%2Cn%3A570278&page={0}&bbn=3581963031&ie=UTF8&qid=1498848985'
+        },
+        UK: {
+            CATEGORIE: 'CASQUE',
+            LINK: 'https://www.amazon.co.uk/s/ref=sr_pg_{0}?rh=n%3A3581866031%2Cn%3A560798%2Cn%3A%21560800%2Cn%3A560884%2Cn%3A560910%2Cn%3A4085731&page={0}&bbn=3581866031&ie=UTF8&qid=1498849315'
+        },
+        IT: {
+            CATEGORIE: 'CASQUE',
+            LINK: "https://www.amazon.it/s/ref=sr_pg_{0}?fst=as%3Aoff&rh=n%3A3581999031%2Cn%3A412609031%2Cn%3A%21412610031%2Cn%3A473287031%2Cn%3A1485125031%2Cn%3A473365031&page={0}&bbn=3581999031&ie=UTF8&qid=1498849458"
+        },
+
+
+    },
     PCFIXE: {
         DE: {
             CATEGORIE: 'PCFIXE',
