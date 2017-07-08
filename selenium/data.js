@@ -10,7 +10,7 @@ exports.data = [
         + "Renault Koleos\nCitroen grand C4 picasso (avant 2013)\nCitroen C-crosser\nPeugeot SW\n"
         + "DAIHATSU Terios II\nSUBARU Forester\nSsangyong kyron\nSsang Yong  rexton\n"
         + "SKODA Praktik\nSEAT Alhambra\nCitroen C-crosser",
-        prix: "85",
+        prix: "75",
         image0: "barres\\ateraSigno-01.jpg",
         image1: "barres\\ateraSigno-02.jpg",
         image2: "barres\\ateraSigno-03.jpg",
@@ -19,7 +19,7 @@ exports.data = [
     }
     ,
 
-    {
+   /* {
         titre: "Antivol en U neuf",
         desc: "Antivol en U neuf avec 2 clefs\n"
         + "Anse en acier trempé de 12mm de diamètre\n"
@@ -31,7 +31,7 @@ exports.data = [
         image1: "moto\\AntivolAuvray-02.jpg",
         categorie: "cat55",
         tel: "0661251165"
-    },
+    },*/
     {
         titre: "Casque PS4 Gioteck HS-1",
         desc: "Casque PlayStation 4 Gioteck HS-1 Superlite avec microphone.\n\n"
@@ -137,12 +137,11 @@ exports.data = [
         + "\nFord Mondeo 3 III entre 2007 et 2010"
         + "\nSkoda Fabia II (5p) à partir de 05/2007"
         + "\nBMW Serie 5 (E60) et Serie 5 SW (E61)"
-        + "\nVW Polo"
-        + "\nVW Golf IV "
-        + "\nMitsubishi L200 VI"
-        + "\nRenault Clio 3"
-        + "\nRenault Scenic I (1997 >2003)",
-        prix: "80",
+        + "\nVW Golf IV 5p (1998-2002)"
+        + "\nMitsubishi L200 VI 5p (>2006)"
+        + "\nRenault Clio 3 5p (2005-2012)"
+        + "\nRenault Scenic I (1997-2003)",
+        prix: "75",
         image0: "barres\\original-01.jpg",
         //   image1: "barres\\original-02.jpeg",
         categorie: "cat6",
@@ -208,7 +207,7 @@ exports.data = [
      / partie 2eme compte
      -------------*/
 
-    {
+  /*  {
         titre: "Barres de toit Atera Skoda Fabia neuves",
         desc: "Barres de toit Atera neuves pour Skoda Fabia depuis 04/2007 "
         + "\nMarque allemande de très haute qualité "
@@ -223,7 +222,7 @@ exports.data = [
         categorie: "cat6",
         tel: "0781810049"
     }
-    ,/*
+    ,/* *//*
     {
         titre: "Tableau Chevalet Diamant HI-Lite",
         desc: "Tableau Chevalet Diamant HI-Lite dans sa boit d'origine, la boite est un peu abimée",
@@ -282,8 +281,8 @@ exports.data = [
         + "DAIHATSU Terios II\nSUBARU Forester\nSsangyong kyron\nSsang Yong rexton\n"
         + "SKODA Praktik\nSEAT Alhambra\n"
         + "Citroen C-crosser\n"
-        + "Kia Carens - Rio SW - Sportage \n",
-        prix: "80",
+        + "Kia Carens - Rio SW - Sportage (2004-2010) \n",
+        prix: "75",
         image0: "barres\\TrekCC-01.jpg",
         image1: "barres\\TrekCC-02.jpg",
         image2: "barres\\TrekCC-03.jpg",
