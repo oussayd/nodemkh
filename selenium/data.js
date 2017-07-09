@@ -1,3 +1,5 @@
+var env = require('./env.js').env;
+
 exports.data = [
     {
         titre: "Barres de toit Atera neuves",
@@ -15,7 +17,7 @@ exports.data = [
         image1: "barres\\ateraSigno-02.jpg",
         image2: "barres\\ateraSigno-03.jpg",
         categorie: "cat6",
-        tel: "0781810049"
+        tel: env.tel2
     }
     ,
 
@@ -30,7 +32,7 @@ exports.data = [
         image0: "moto\\AntivolAuvray-01.jpg",
         image1: "moto\\AntivolAuvray-02.jpg",
         categorie: "cat55",
-        tel: "0661251165"
+        tel: env.tel1
     },
     {
         titre: "Casque PS4 Gioteck HS-1",
@@ -43,7 +45,7 @@ exports.data = [
         categorie: "cat43",
         // cp: "92800",
         //   ville: "Puteaux",
-        tel: "0661251165"
+        tel:  env.tel1
     },
     /*
     {
@@ -86,10 +88,10 @@ exports.data = [
         desc: "Barres de toit compatible avec les voitures Modus et Grand Modus en très bon état",
         prix: "50",
         image0: "barres\\easyOne-01.jpg",
-        image1: "barres\\easyOne-02.jpeg",
-        image2: "barres\\easyOne-03.jpeg",
+        image1: "barres\\easyOne-02.jpg",
+        image2: "barres\\easyOne-03.jpg",
         categorie: "cat6",
-        tel: "0661251165"
+        tel:  env.tel1
     }
     ,/*
     //Clés manquantes
@@ -116,9 +118,9 @@ exports.data = [
         categorie: "cat6",
         //cp: "92800",
         //ville: "Puteaux",
-        tel: "0661251165"
+        tel:  env.tel1
     },
-    {
+  /*  {
         titre: "Barres de toit en Aluminium pour Skoda Superb",
         desc: "Barres de toit en Aluminium pour Skoda Superb 2001 – 2008\n"
         + "Etat : neuf",
@@ -126,10 +128,10 @@ exports.data = [
         image0: "barres\\MenaboSkodaSuperb-01.jpg",
         //   image1: "barres\\original-02.jpeg",
         categorie: "cat6",
-        tel: "0661251165"
+        tel: env.tel1
     }
     ,
-
+*/
 
     {
         titre: "Barres de toit neuves ",
@@ -146,7 +148,7 @@ exports.data = [
         image0: "barres\\original-01.jpg",
         //   image1: "barres\\original-02.jpeg",
         categorie: "cat6",
-        tel: "0781810049"
+        tel:  env.tel2
     }/*
     ,
      {
@@ -201,7 +203,7 @@ exports.data = [
         image1: "auto\\Kenwood-02.jpeg",
         image2: "auto\\Kenwood-03.jpeg",
         categorie: "cat6",
-        tel: "0661251165"
+        tel:  env.tel1
     },
 
     /*----------
@@ -221,7 +223,7 @@ exports.data = [
         image1: "barres\\AteraSkodaFabia-02.jpeg",
         image2: "barres\\AteraSkodaFabia-03.jpeg",
         categorie: "cat6",
-        tel: "0781810049"
+        tel:  env.tel2
     }
     ,/*
     {
@@ -244,7 +246,7 @@ exports.data = [
         image0: "auto\\coussinAuto-01.jpg",
         image1: "auto\\coussinAuto-02.jpg",
         categorie: "cat6",
-        tel: "0661251165"
+        tel:  env.tel1
     },
     /*
       {
@@ -267,7 +269,7 @@ exports.data = [
         image0: "occasion\\paraboleAstra-01.jpg",
         image1: "occasion\\paraboleAstra-02.jpg",
         categorie: "cat16",
-        tel: "0661251165"
+        tel:  env.tel1
     },
     {
         titre: "Barres de toit Touran Tiguan Zafira",
@@ -289,7 +291,7 @@ exports.data = [
         image2: "barres\\TrekCC-03.jpg",
 
         categorie: "cat6",
-        tel: "0661251165"
+        tel:  env.tel1
     }
 
     /* ,

@@ -1,7 +1,8 @@
 var dp = require('jasmine-data-provider'); //Install the npm package and provide its path
 var lbcData = require('./data.js').data;
+var env = require('./env.js').env;
 var EC = protractor.ExpectedConditions;
-var IMAGES_PATH = "C:\\Users\\MOHAMED\\Google Drive\\leboncoin\\selenium\\";
+var IMAGES_PATH = "D:\\GDrive\\leboncoin\\selenium\\";
 
 //Authentification sur le site l b c
 beforeAll(function () {
@@ -15,9 +16,8 @@ beforeAll(function () {
         var usernameInput = element(by.css('[name="st_username"]'));
         browser.wait(protractor.ExpectedConditions.visibilityOf(usernameInput));
 
-        usernameInput.sendKeys("oussayd@gmail.com");
-       // usernameInput.sendKeys("mohamed.khaireddine@gmail.com");
-        element.all(by.css('[name="st_passwd"]')).sendKeys("rafhaj14");
+        usernameInput.sendKeys(env.username);
+        element.all(by.css('[name="st_passwd"]')).sendKeys(env.password);
         element.all(by.id('connect_button')).click();
         browser.sleep(2000);
         element(by.id('allChecked_top')).click();

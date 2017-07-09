@@ -16,6 +16,17 @@ var RECONDITIONNE = require('./utils/reconditionne.js');
 var NOUVEAU = require('./utils/nouveau.js');
 var USER_AGENTS = require('./utils/userAgents.js');
 
+const winston = require('winston');
+
+winston.loggers.add('dev', {
+  console: {
+    level: 'silly',
+    timestamp:true,
+    colorize: 'true'  }
+});
+
+const logger = winston.loggers.get('dev');
+
 
 // mongoose for mongodb
 mongoose.connect('mongodb://localhost:27017/amazon'); // connect to mongoDB database on modulus.io
@@ -98,7 +109,7 @@ var getReductionEstim = function(nouveauPrix){
      reducEstim =  nouveauPrix*100/moyenne ;
     }
     updateListPricesEstim(nouveauPrix);
-    console.log("moyenne : " +moyenne + " lastPricesEstim : " + lastPricesEstim );
+    logger.info("moyenne : " +moyenne + " lastPricesEstim : " + lastPricesEstim );
     return reducEstim.toFixed(2);
 }
 
@@ -141,9 +152,9 @@ var recherchePrix = function (indexL) {
 
 var searchLoop = function () {
 
-    console.log("+++++++++++++++++++++++ Page " + pageIndex + " +++++++++++++++++++++++");
+    logger.info("+++++++++++++++++++++++ Page " + pageIndex + " +++++++++++++++++++++++");
     var url = compile(lienInfo.LINK)(pageIndex)+"&sort=price-desc-rank";
-    console.log("[" + lienInfo.CATEGORIE + "] Page URL : " + url);
+    logger.info("[" + lienInfo.CATEGORIE + "] Page URL : " + url);
     scrapPricesFromPage(url)
         .then(checkNext);
 
@@ -153,7 +164,7 @@ var promiseFn1 = function (index) {
     var deferred = Q.defer();
 
     setTimeout(function () {
-        console.log("Etatpe 1 : " + index);
+        logger.info("Etatpe 1 : " + index);
         deferred.resolve(index);
     }, TIMEOUT);
     return deferred.promise;
@@ -173,13 +184,13 @@ var checkNext = function () {
         if (indexLien < links.length) {
 
             lastPage = false;
-            console.log("//////////////////////////// Passage à la categorie " + links[indexLien].CATEGORIE + " ////////////////////////////");
+            logger.info("//////////////////////////// Passage à la categorie " + links[indexLien].CATEGORIE + " ////////////////////////////");
 
             recherchePrix(indexLien);
         }else {
        // var deferred = Q.defer();
 
-        console.log("!!!!!!!!!!!!!!!!!!!!!!! LastPage " + pageIndex + " !!!!!!!!!!!!!!!!!!!!!!");
+        logger.info("!!!!!!!!!!!!!!!!!!!!!!! LastPage " + pageIndex + " !!!!!!!!!!!!!!!!!!!!!!");
         logEnd();
         process.exit(0);
         }
@@ -221,7 +232,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl) {
             }
         })
         .catch(function (err) {
-            console.log("err--" + err);
+            logger.error(err);
             deferred.resolve();
 
         });
@@ -233,7 +244,7 @@ var scrapPricesFromPage = function (_url, urlInfo, baseUrl) {
 
 var promiseFn4 = function (dealListIndex) {
 
-    //  console.log("Etatpe 4 : " + index);
+    //  logger.info("Etatpe 4 : " + index);
     dealListIndex++;
     if (dealListIndex < dealList.length)
         return promiseAll(dealListIndex);
@@ -248,7 +259,7 @@ var promiseAll = function (index) {
 };
 
 function createNewDeal(asin, titre, prix, imgUrl, deferred, index) {
-    console.log("deal not found");
+    logger.info("deal not found");
 
     var newDeal = new Deal({
         asin: asin,
@@ -264,7 +275,7 @@ function createNewDeal(asin, titre, prix, imgUrl, deferred, index) {
     });
     newDeal.save(function (err) {
         if (err) {
-            console.log(err);
+            logger.error(err);
         }
         updateAllLocales(newDeal, deferred, index);
 
@@ -287,7 +298,7 @@ function updateAllLocales(deal, deferred, index) {
                                     if (!!deal.asin) {
 
                                         deal.save();
-                                        console.log(numeroDeal + " - " + deal.asin + " saved");
+                                        logger.info(numeroDeal + " - " + deal.asin + " saved");
                                     }
                                         deferred.resolve(index);
 
@@ -336,7 +347,7 @@ function updateDeal(index, deferred) {
     }
     prix = parsePrice(prixString, urlInfo.locale);
 
-    console.log(numeroDeal + " - " + asin + " : " + prix);
+    logger.info(numeroDeal + " - " + asin + " : " + prix);
 
     if(!isNotInList(titre,lienInfo.CATEGORIE,commun.whiteList)){
     Deal.findOne({
@@ -346,7 +357,7 @@ function updateDeal(index, deferred) {
 
         if (err){
 
-            console.log(err.type + " ---- " + err.value);
+            logger.error(err.type + " ---- " + err.value);
                 deferred.resolve(index);
         }
         else if (!deal) {
@@ -384,9 +395,9 @@ function updateDeal(index, deferred) {
         },
         function (err, deal) {
             if (err)
-                console.log(err);
+                logger.info(err);
 
-            console.log("-----" + JSON.stringify(deal));
+            logger.info("-----" + JSON.stringify(deal));
             setTimeout(function () {
                 deferred.resolve(index);
             }, 200);
@@ -395,7 +406,7 @@ function updateDeal(index, deferred) {
 }
 var isNotInList = function (title, categorie,listTitres) {
 
-    console.log( " - " + title )
+    logger.info( " - " + title )
     if (skipList || categorie.indexOf("MONTRES")<0) {
         return false;
     }
@@ -411,7 +422,7 @@ var isNotInList = function (title, categorie,listTitres) {
 }
 var promiseFn1 = function (index) {
     var deferred = Q.defer();
-    console.log("Etatpe 1 : " + index);
+    logger.info("Etatpe 1 : " + index);
 
     numeroDeal++;
     updateDeal(index, deferred);
@@ -422,14 +433,14 @@ var promiseFn1 = function (index) {
 };
 
 function logEnd() {
-    console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    console.log("////////////////////// ////// THE END ////////////////////////////");
-    console.log("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    logger.info("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    logger.info("////////////////////// ////// THE END ////////////////////////////");
+    logger.info("//+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 }
 
 var getRandomUserAgent = function(){
     var uagent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
-    console.log(uagent);
+    logger.info(uagent);
     return uagent;
 };
 
@@ -439,7 +450,7 @@ var reqOptions = function (_url) {
     nbReqs++;
   //  if (nbReqs%25==0){
      uA = getRandomUserAgent();
-   // console.log(uA);
+   // logger.info(uA);
     //}
     return {
         url: _url
@@ -469,7 +480,7 @@ function updateReduction(deal, prixLocal, pays, _urlLocale, deferred,delay) {
     if (pays === deal.pays) {
         deal.reduction = reduction;
     }
-    console.log(numeroDeal + " - " + _urlLocale + " p[" + deal.prix + "]" + " pL[" + prixLocal + "]" + " r[" + deal.reduction + "]"  + " RE[" + deal.reductionEstim + "]" + " RG[" + deal.reductionGlobale + "]");
+    logger.info(numeroDeal + " - " + _urlLocale + " p[" + deal.prix + "]" + " pL[" + prixLocal + "]" + " r[" + deal.reduction + "]"  + " RE[" + deal.reductionEstim + "]" + " RG[" + deal.reductionGlobale + "]");
    if(delay){
     setTimeout(function () {
         deferred.resolve();
@@ -493,7 +504,7 @@ var updateLocalPrice = function (deal,pays) {
     var _urlLocale = commun.articleUrlTemplate( pays,deal.asin);
 
    /* setTimeout(function () {
-        console.log("updateLocalPrice : "  + deal.asin +" - "+ pays);
+        logger.info("updateLocalPrice : "  + deal.asin +" - "+ pays);
         deferred2.resolve();
     }, 2000);*/
     if (checkPrice(deal.prixLocaux[pays.replace('.', '')])){
@@ -530,7 +541,7 @@ var updateLocalPrice = function (deal,pays) {
                     }
                 })
                 .catch(function (err) {
-                    console.log("err");
+                    logger.error("err");
                     deferred.resolve();
 
                 });
