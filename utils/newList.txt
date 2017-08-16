@@ -18,3 +18,17 @@ DE;MOBILE;https://www.amazon.de/s/ref=sr_nr_n_3?fst=as%3Aoff&rh=n%3A3581963031%2
 DE;PC_FIXE;https://www.amazon.de/s/ref=sr_nr_n_3?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A340843031%2Cn%3A%21340844031%2Cn%3A427954031&bbn=3581963031;
 DE;PC_PORTABLE;https://www.amazon.de/s/ref=sr_nr_n_8?fst=as%3Aoff&rh=n%3A3581963031%2Cn%3A340843031%2Cn%3A%21340844031%2Cn%3A427957031&bbn=3581963031;
 DE;VETEMENTS;https://www.amazon.de/s/ref=sr_nr_p_n_format_browse-bi_0?rh=n%3A3581963031%2Cn%3A77028031&bbn=3581963031;
+
+IT;BRICOLAGE;https://www.amazon.it/s/ref=lp_3581999031_nr_i_7?fst=as%3Aoff&rh=i%3Adiy&bbn=3581999031;
+IT;CHAUSSURES;https://www.amazon.it/s/?__mk_it_IT=%C5M%C5Z%D5%D1&rh=i:shoes&bbn=3581999031;
+IT;ELECTROMENAGER_CUISINE;https://www.amazon.it/s/ref=sr_nr_n_8?fst=as%3Aoff&rh=n%3A3581999031%2Cn%3A524015031%2Cn%3A%21524016031%2Cn%3A602473031&bbn=3581999031;
+IT;GPS_AUTO;https://www.amazon.it/s/ref=sr_nr_n_9?fst=as%3Aoff&rh=n%3A3581999031%2Cn%3A1571280031%2Cn%3A%211571281031%2Cn%3A2901657031&bbn=3581999031;
+IT;MOBILE;https://www.amazon.it/s/ref=sr_nr_n_1?fst=as%3Aoff&rh=n%3A3581999031%2Cn%3A412609031%2Cn%3A%21412610031%2Cn%3A1497228031%2Cn%3A473246031&bbn=3581999031;
+IT;PC_FIXE;https://www.amazon.it/s/ref=sr_nr_n_4?fst=as%3Aoff&rh=n%3A3581999031%2Cn%3A425916031%2Cn%3A%21425917031%2Cn%3A460127031&bbn=3581999031;
+IT;PC_PORTABLE;https://www.amazon.it/s/ref=sr_nr_n_8?fst=as%3Aoff&rh=n%3A3581999031%2Cn%3A425916031%2Cn%3A%21425917031%2Cn%3A460158031&bbn=3581999031;
+IT;VETEMENTS;https://www.amazon.it/s/ref=sr_pg_2?rh=n%3A3581999031%2Cn%3A2844433031&page=2&bbn=3581999031;
+IT;MONTRES;https://www.amazon.it/s/ref=lp_3581999031_nr_i_24?fst=as%3Aoff&rh=i%3Awatches&bbn=3581999031;
+IT;BEBE;https://www.amazon.it/s/ref=lp_3581999031_nr_i_18?fst=as%3Aoff&rh=i%3Ababy&bbn=3581999031;
+IT;SPORT;https://www.amazon.it/s/ref=lp_3581999031_nr_i_8?fst=as%3Aoff&rh=i%3Asporting&bbn=3581999031;
+IT;MEUBLES;https://www.amazon.it/s/ref=sr_nr_n_0?fst=as%3Aoff&rh=n%3A3581999031%2Cn%3A524015031%2Cn%3A%21524016031%2Cn%3A2808571031&bbn=3581999031;
+IT;DECORATION;https://www.amazon.it/s/ref=sr_nr_n_5?fst=as%3Aoff&rh=n%3A3581999031%2Cn%3A524015031%2Cn%3A%21524016031%2Cn%3A731676031&bbn=3581999031;
