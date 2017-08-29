@@ -23,6 +23,10 @@ var RECONDITIONNE = {
             CATEGORIE: "ACCESSOIRES_AUTO",
             LINK: "https://www.amazon.fr/s/ref=sr_nr_n_0?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A1571265031%2Cn%3A%211571266031%2Cn%3A2429681031&bbn=3581943031&page={0}"
         },
+        FR_ACCESSOIRES_AUTO: {
+            CATEGORIE: "INFORMATIQUE_RESEAU",
+            LINK: "https://www.amazon.fr/s/ref=sr_pg_{0}?rh=n%3A3581943031%2Cn%3A340858031%2Cn%3A%21340859031%2Cn%3A427939031&page={0}&bbn=3581943031&sort=price-asc-rank&ie=UTF8&qid=1504044542"
+        },
         FR_BRICOLAGE: {
             CATEGORIE: "BRICOLAGE",
             LINK: "https://www.amazon.fr/s/ref=sr_nr_n_5?fst=as%3Aoff&rh=n%3A3581943031%2Cn%3A590748031%2Cn%3A%21590749031%2Cn%3A1716189031%2Cn%3A1794242031&bbn=3581943031&page={0}"
